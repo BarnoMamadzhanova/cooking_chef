@@ -1,28 +1,56 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import classes from "./Header.module.css";
-import { logo } from "../../assests";
+import {
+  logo,
+  logo_alt,
+  home,
+  home_alt,
+  search,
+  search_alt,
+  user,
+  user_alt,
+  logout,
+} from "../../assests";
+
+const setActiveLink = ({ isActive }) =>
+  `${classes.nav_link} ${isActive ? classes.active_link : ""}`;
 
 const Header = () => {
   return (
     <header className={classes.header}>
       <div className={classes.header_wrapper}>
         <div className={classes.sidebar}>
-          <Link to="/" className={`${classes.nav_link} ${classes.first_link}`}>
-            <img src={logo} alt="CooksCorner" />
-          </Link>
+          <NavLink to="/" className={classes.first_link}>
+            {({ isActive }) => (
+              <img src={isActive ? logo : logo_alt} alt="CooksCorner" />
+            )}
+          </NavLink>
           <div className={classes.links}>
-            <Link to="/home" className={classes.nav_link}>
-              Home
-            </Link>
-            <Link to="/search" className={classes.nav_link}>
-              Search
-            </Link>
-            <Link to="/profile" className={classes.nav_link}>
-              Profile
-            </Link>
+            <NavLink to="/home" className={setActiveLink}>
+              {({ isActive }) => (
+                <img src={isActive ? home : home_alt} alt="Home" />
+              )}
+            </NavLink>
+            <NavLink to="/search" className={setActiveLink}>
+              {({ isActive }) => (
+                <img src={isActive ? search : search_alt} alt="Search" />
+              )}
+            </NavLink>
+            <NavLink to="/profile" className={setActiveLink}>
+              {({ isActive }) => (
+                <img src={isActive ? user : user_alt} alt="Profile" />
+              )}
+            </NavLink>
           </div>
         </div>
-        <Link className={classes.nav_btn}>Logout</Link>
+        <NavLink
+          to="*"
+          className={({ isActive }) =>
+            `${setActiveLink({ isActive })} ${classes.last_link}`
+          }
+        >
+          <img src={logout} alt="Logout" />
+        </NavLink>
       </div>
     </header>
   );

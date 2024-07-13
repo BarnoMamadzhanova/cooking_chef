@@ -22,6 +22,11 @@
   text-decoration: none;
   display: block;
   transition: all 0.3s ease;
+  cursor: pointer;
+  background: #fafafa;
+  border-radius: 10px;
+  height: 24px;
+  padding: 1rem;
 }
 
 .sidebar {
@@ -32,6 +37,10 @@
 }
 
 .first_link {
+  text-decoration: none;
+  display: block;
+  transition: all 0.3s ease;
+  cursor: pointer;
   position: relative;
 }
 
@@ -51,7 +60,20 @@
   gap: 1.5rem;
 }
 
-.nav_btn {
+.links .nav_link {
+  height: 24px;
+  padding: 1rem;
+}
+
+.last_link {
   margin-top: auto;
-  text-decoration: none;
+  margin-inline: 0.625rem;
+}
+
+.nav_link.active_link {
+  background-color: #fa9e31;
+}
+
+.nav_link:hover {
+  background-color: #fbbf75fe;
 }

@@ -1,5 +1,6 @@
 import "./styles/App.css";
 import { Routes, Route } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 import Home from "./pages/Home/Home";
 import Splash from "./pages/Splash/Splash";
@@ -25,6 +26,7 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/chef" element={<Chef />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Route>
       </Routes>
     </div>
