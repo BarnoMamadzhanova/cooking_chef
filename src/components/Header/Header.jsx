@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import classes from "./Header.module.css";
-import { logo, logo_alt } from "../../assests";
+import { logo } from "../../assests";
 
 const Header = () => {
   return (
@@ -8,7 +8,7 @@ const Header = () => {
       <div className={classes.header_wrapper}>
         <div className={classes.sidebar}>
           <Link to="/" className={`${classes.nav_link} ${classes.first_link}`}>
-            <img src={logo_alt} alt="CooksCorner" />
+            <img src={logo} alt="CooksCorner" />
           </Link>
           <div className={classes.links}>
             <Link to="/home" className={classes.nav_link}>
