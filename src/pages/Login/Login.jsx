@@ -1,6 +1,7 @@
 import React from "react";
 import classes from "./Login.module.css";
 import Welcome from "../../components/Welcome/Welcome";
+import LoginForm from "../../components/LoginForm/LoginForm";
 
 function Login() {
   return (
@@ -11,6 +12,7 @@ function Login() {
           To <strong>CooksCorner</strong>
         </h2>
       </Welcome>
+      <LoginForm />
     </div>
   );
 }
