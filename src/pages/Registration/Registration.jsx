@@ -1,10 +1,16 @@
 import React from "react";
 import classes from "./Registration.module.css";
+import Welcome from "../../components/Welcome/Welcome";
 
 function Registration() {
   return (
     <div className={classes.registration}>
-      <h3>Registration</h3>
+      <Welcome>
+        <h2 className={classes.welcome_title}>Sign up for delicious</h2>
+        <h2 className={classes.welcome_title}>
+          <strong>Discoveries!</strong>
+        </h2>
+      </Welcome>
     </div>
   );
 }

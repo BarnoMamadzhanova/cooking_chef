@@ -1,10 +1,16 @@
 import React from "react";
 import classes from "./Login.module.css";
+import Welcome from "../../components/Welcome/Welcome";
 
 function Login() {
   return (
     <div className={classes.login}>
-      <h3>Login</h3>
+      <Welcome>
+        <h2 className={classes.welcome_title}>Welcome Back</h2>
+        <h2 className={classes.welcome_title}>
+          To <strong>CooksCorner</strong>
+        </h2>
+      </Welcome>
     </div>
   );
 }
