@@ -1,6 +1,7 @@
 import React from "react";
 import classes from "./Registration.module.css";
 import Welcome from "../../components/Welcome/Welcome";
+import RegisterForm from "../../components/RegisterForm/RegisterForm";
 
 function Registration() {
   return (
@@ -11,6 +12,7 @@ function Registration() {
           <strong>Discoveries!</strong>
         </h2>
       </Welcome>
+      <RegisterForm />
     </div>
   );
 }

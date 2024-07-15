@@ -25,7 +25,7 @@ function LoginForm() {
     validationSchema: loginSchema,
     onSubmit: (values, actions) => {
       try {
-        console.log("Login successful", values);
+        console.log("Login was successful", values);
         navigate("/home");
       } catch (error) {
         console.log("Login failed", error);
