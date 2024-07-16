@@ -1,3 +1,4 @@
+import React from "react";
 import { NavLink } from "react-router-dom";
 import classes from "./Header.module.css";
 import {
@@ -10,7 +11,7 @@ import {
   user,
   user_alt,
   logout,
-} from "../../assests";
+} from "../../assests/index";
 
 const setActiveLink = ({ isActive }) =>
   `${classes.nav_link} ${isActive ? classes.active_link : ""}`;

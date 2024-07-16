@@ -1,6 +1,6 @@
+import React from "react";
 import "./styles/App.css";
-import { Routes, Route } from "react-router-dom";
-import { Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import Home from "./pages/Home/Home";
 import Splash from "./pages/Splash/Splash";
@@ -13,7 +13,7 @@ import Chef from "./pages/Chef/Chef";
 
 import Layout from "./components/Layout";
 
-function App() {
+const App: React.FC = () => {
   return (
     <div className="App">
       <Routes>
@@ -31,6 +31,6 @@ function App() {
       </Routes>
     </div>
   );
-}
+};
 
 export default App;

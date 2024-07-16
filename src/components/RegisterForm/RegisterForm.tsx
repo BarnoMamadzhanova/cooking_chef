@@ -151,7 +151,7 @@ function RegisterForm() {
           <div className={classes.error_message}>{errors.rePassword}</div>
         )}
 
-        <button type="submit" disabled={isSubmitting} onSubmit={handleSubmit}>
+        <button type="submit" disabled={isSubmitting}>
           Sign In
         </button>
         {/* {errorMessage && (
