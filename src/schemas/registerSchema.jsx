@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-const usernamePattern = /^[a-zA-Z]+$/;
+const usernamePattern = /^[a-zA-Z0-9_]+$/;
 
 const emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$/;
 
@@ -16,7 +16,10 @@ export const registerSchema = yup.object().shape({
     .string()
     .min(3, "User name must contain at least 3 letters")
     .max(20, "User name must contain no more than 20 letters")
-    .matches(usernamePattern, "User name must consist of letters only")
+    .matches(
+      usernamePattern,
+      "User name must consist only of letters and numbers"
+    )
     .required("Required"),
   password: yup
     .string()

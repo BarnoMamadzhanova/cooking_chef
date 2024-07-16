@@ -1,0 +1,21 @@
+.card {
+  border-radius: 1rem;
+}
+
+.card_img {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 49.93%,
+    rgba(0, 0, 0, 0.61) 100%
+  );
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* background: linear-gradient(180deg, rgba(0, 0, 0, 0) 49.93%, rgba(0, 0, 0, 0.61) 100%), url(.jpg);
+border-radius: 15px; */
