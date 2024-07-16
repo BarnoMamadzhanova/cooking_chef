@@ -160,7 +160,7 @@ function RegisterForm() {
       </form>
       <div className={classes.link_box}>
         <p>Already have an account?</p>
-        <Link to="/registration" className={classes.register_link}>
+        <Link to="/" className={classes.register_link}>
           Sign In Now
         </Link>
       </div>
