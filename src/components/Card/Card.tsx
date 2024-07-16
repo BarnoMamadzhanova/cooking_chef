@@ -1,7 +1,12 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import classes from "./Card.module.css";
 
-function Card({ image, children }) {
+interface CardProps {
+  image: string;
+  children: ReactNode;
+}
+
+function Card({ image, children }: CardProps) {
   return (
     <div className={classes.card}>
       <div

@@ -1,12 +1,16 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import classes from "./Welcome.module.css";
 
-function Welcome({ children }) {
+interface WelcomeProps {
+  children: ReactNode;
+}
+
+const Welcome: React.FC<WelcomeProps> = ({ children }) => {
   return (
     <div className={classes.welcome}>
       <div className={classes.welcome_content}>{children}</div>
     </div>
   );
-}
+};
 
 export default Welcome;

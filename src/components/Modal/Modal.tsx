@@ -1,7 +1,13 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import classes from "./Modal.module.css";
 
-function Modal({ active, setActive, children }) {
+interface ModalProps {
+  active: boolean;
+  setActive: (active: boolean) => void;
+  children: ReactNode;
+}
+
+const Modal: React.FC<ModalProps> = ({ active, setActive, children }) => {
   return (
     <div
       className={active ? `${classes.modal} ${classes.active}` : classes.modal}
@@ -19,6 +25,6 @@ function Modal({ active, setActive, children }) {
       </div>
     </div>
   );
-}
+};
 
 export default Modal;

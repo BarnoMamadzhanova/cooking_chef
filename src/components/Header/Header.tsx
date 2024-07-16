@@ -13,7 +13,11 @@ import {
   logout,
 } from "../../assests/index";
 
-const setActiveLink = ({ isActive }) =>
+type ActiveLinkProps = {
+  isActive: boolean;
+};
+
+const setActiveLink = ({ isActive }: ActiveLinkProps) =>
   `${classes.nav_link} ${isActive ? classes.active_link : ""}`;
 
 const Header = () => {
