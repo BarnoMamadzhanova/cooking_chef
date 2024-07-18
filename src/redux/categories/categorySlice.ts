@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { getCategories } from "../../api/categories/index";
-import { ICategory } from "../../api/categories/types";
+import { getCategories, addCategory } from "../../api/categories/index";
+import { ICategory, INewCategory } from "../../api/categories/types";
 import axios from "axios";
 
 interface CategoryState {
@@ -32,6 +32,21 @@ export const fetchCategories = createAsyncThunk(
   }
 );
 
+export const createCategory = createAsyncThunk(
+  "categories/createCategory",
+  async (newCategory: INewCategory, { rejectWithValue }) => {
+    try {
+      const response = await addCategory(newCategory);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue("An unknown error occurred");
+    }
+  }
+);
+
 const categorySlice = createSlice({
   name: "categories",
   initialState,
@@ -47,6 +62,20 @@ const categorySlice = createSlice({
       state.error = null;
     });
     builder.addCase(fetchCategories.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    });
+
+    builder.addCase(createCategory.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(createCategory.fulfilled, (state, action) => {
+      state.loading = false;
+      state.categories.push(action.payload);
+      state.error = null;
+    });
+    builder.addCase(createCategory.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string;
     });

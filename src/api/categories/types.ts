@@ -5,6 +5,6 @@ export interface ICategory {
   name: string;
 }
 
-// export interface IGetCategoriesResponse {
-//   categories: ICategory[];
-// }
+export interface INewCategory {
+  name: string;
+}
