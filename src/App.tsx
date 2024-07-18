@@ -14,9 +14,16 @@ import Profile from "./pages/Profile/Profile";
 import Chef from "./pages/Chef/Chef";
 
 import Layout from "./components/Layout/Layout";
+import withAuthProtection from "./components/HOC/withAuthProtection";
+
+const ProtectedHome = withAuthProtection(Home);
+const ProtectedProfile = withAuthProtection(Profile);
+const ProtectedChef = withAuthProtection(Chef);
+const ProtectedDetails = withAuthProtection(Details);
+const ProtectedSearch = withAuthProtection(Search);
 
 const App: React.FC = () => {
-  const { isAuth, isLoading } = useAppSelector(selectAuthState);
+  const { isLoading } = useAppSelector(selectAuthState);
 
   if (isLoading) {
     return <Splash />;
@@ -28,11 +35,11 @@ const App: React.FC = () => {
         <Route path="/" element={<Layout />}>
           <Route index element={<Login />} />
           <Route path="/registration" element={<Registration />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/details" element={<Details />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/chef" element={<Chef />} />
+          <Route path="/home" element={<ProtectedHome />} />
+          <Route path="/details" element={<ProtectedDetails />} />
+          <Route path="/search" element={<ProtectedSearch />} />
+          <Route path="/profile" element={<ProtectedProfile />} />
+          <Route path="/chef" element={<ProtectedChef />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Route>
       </Routes>
