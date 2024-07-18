@@ -63,13 +63,9 @@
   gap: 1.5rem;
 }
 
-.links img {
-  height: 24px;
-  width: 24px;
-}
-
 .links .nav_link {
   height: 24px;
+  width: 24px;
   padding: 1rem;
 }
 
@@ -82,16 +78,10 @@
   padding: 1rem;
 }
 
-.logoutButton {
+.last_link button {
+  padding: 0;
   border: none;
   outline: none;
-}
-
-.logoutButton button:hover {
-  background-color: #fa9e31;
-}
-
-.logoutButton img {
   height: 24px;
   width: 24px;
 }
@@ -109,7 +99,6 @@
   flex-direction: column;
   gap: 1.5rem;
   align-items: center;
-  z-index: 2;
 }
 
 .modal__message p {

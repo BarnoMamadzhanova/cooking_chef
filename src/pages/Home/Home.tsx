@@ -21,10 +21,7 @@ function Home() {
   }, [dispatch, isAuth]);
 
   const handleCategoryClick = (categoryId: number) => {
-    // Handle category click logic here (e.g., fetch recipes based on categoryId)
     console.log("Category clicked:", categoryId);
-    // Example: Dispatch action to fetch recipes based on categoryId
-    // dispatch(fetchRecipesByCategory(categoryId));
   };
 
   return (
