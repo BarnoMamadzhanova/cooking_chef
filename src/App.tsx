@@ -13,7 +13,7 @@ import Details from "./pages/Details/Details";
 import Profile from "./pages/Profile/Profile";
 import Chef from "./pages/Chef/Chef";
 
-import Layout from "./components/Layout";
+import Layout from "./components/Layout/Layout";
 
 const App: React.FC = () => {
   const { isAuth, isLoading } = useAppSelector(selectAuthState);

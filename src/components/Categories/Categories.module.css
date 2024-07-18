@@ -1,0 +1,41 @@
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 3.5rem;
+  margin-bottom: 2rem;
+}
+
+.link {
+  text-decoration: none;
+  color: black;
+  display: block;
+  padding: 0.625rem;
+  font-size: 1.5rem;
+  position: relative;
+}
+
+.list li:hover {
+  color: #6a62b7;
+  cursor: pointer;
+}
+
+.list .active p {
+  font-weight: 700;
+  color: #6a62b7;
+}
+
+.list .active::after {
+  display: block;
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 90px;
+  background: #6a62b7;
+  transform: translateX(-50%);
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+}
