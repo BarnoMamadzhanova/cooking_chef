@@ -34,7 +34,7 @@ function RegisterForm() {
       try {
         await dispatch(registerUser(registerValues));
         console.log("Registration was successful");
-        navigate("/");
+        navigate("/login");
       } catch (error) {
         console.log("Registration failed", error);
       } finally {

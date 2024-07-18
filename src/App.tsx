@@ -1,6 +1,8 @@
 import React from "react";
 import "./styles/App.css";
 import { Routes, Route, Navigate } from "react-router-dom";
+import { useAppSelector } from "./redux/hook";
+import { selectAuthState } from "./redux/auth/authSlice";
 
 import Home from "./pages/Home/Home";
 import Splash from "./pages/Splash/Splash";
@@ -14,6 +16,12 @@ import Chef from "./pages/Chef/Chef";
 import Layout from "./components/Layout";
 
 const App: React.FC = () => {
+  const { isAuth, isLoading } = useAppSelector(selectAuthState);
+
+  if (isLoading) {
+    return <Splash />;
+  }
+
   return (
     <div className="App">
       <Routes>
@@ -21,7 +29,6 @@ const App: React.FC = () => {
           <Route index element={<Login />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/splash" element={<Splash />} />
           <Route path="/details" element={<Details />} />
           <Route path="/search" element={<Search />} />
           <Route path="/profile" element={<Profile />} />
