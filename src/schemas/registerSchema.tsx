@@ -8,11 +8,7 @@ const passwordPattern =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]+$/;
 
 export const registerSchema = yup.object().shape({
-  email: yup
-    .string()
-    .matches(emailPattern, "Please enter a valid email")
-    .required("Required"),
-  username: yup
+  name: yup
     .string()
     .min(3, "User name must contain at least 3 letters")
     .max(20, "User name must contain no more than 20 letters")
@@ -20,6 +16,10 @@ export const registerSchema = yup.object().shape({
       usernamePattern,
       "User name must consist only of letters and numbers"
     )
+    .required("Required"),
+  email: yup
+    .string()
+    .matches(emailPattern, "Please enter a valid email")
     .required("Required"),
   password: yup
     .string()

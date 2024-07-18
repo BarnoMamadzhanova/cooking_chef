@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
+import { useAppDispatch } from "../../redux/hook";
 import { registerSchema } from "../../schemas/registerSchema";
+import { registerUser } from "../../redux/auth/authSlice";
 import { visible, invisible, mail, user_input } from "../../assests/index";
 import classes from "./RegisterForm.module.css";
 
 function RegisterForm() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const {
     values,
@@ -17,22 +20,26 @@ function RegisterForm() {
     handleChange,
     isSubmitting,
     handleSubmit,
+    setSubmitting,
   } = useFormik({
     initialValues: {
-      username: "",
+      name: "",
       email: "",
       password: "",
       rePassword: "",
     },
     validationSchema: registerSchema,
-    onSubmit: (values, actions) => {
+    onSubmit: async (values, actions) => {
+      const { rePassword, ...registerValues } = values;
       try {
-        console.log("Registration was successful", values);
+        await dispatch(registerUser(registerValues));
+        console.log("Registration was successful");
         navigate("/");
       } catch (error) {
         console.log("Registration failed", error);
       } finally {
         actions.resetForm();
+        setSubmitting(false);
       }
     },
     validateOnChange: true,
@@ -47,22 +54,20 @@ function RegisterForm() {
     <div className={classes.register_container}>
       <form className={classes.register_form} onSubmit={handleSubmit}>
         <div className={classes.label_container}>
-          <label htmlFor="username">Name</label>
+          <label htmlFor="name">Name</label>
           <div
             className={`${classes.input_container} ${
-              errors.username && touched.username ? classes.error : ""
+              errors.name && touched.name ? classes.error : ""
             }`}
           >
             <input
-              value={values.username}
+              value={values.name}
               onChange={handleChange}
               type="text"
-              id="username"
+              id="name"
               placeholder="Enter your name"
               onBlur={handleBlur}
-              className={
-                errors.username && touched.username ? classes.inputError : ""
-              }
+              className={errors.name && touched.name ? classes.inputError : ""}
             />
             <img
               src={user_input}
@@ -71,8 +76,8 @@ function RegisterForm() {
             />
           </div>
         </div>
-        {errors.username && touched.username && (
-          <div className={classes.error_message}>{errors.username}</div>
+        {errors.name && touched.name && (
+          <div className={classes.error_message}>{errors.name}</div>
         )}
 
         <div className={classes.label_container}>
@@ -154,9 +159,6 @@ function RegisterForm() {
         <button type="submit" disabled={isSubmitting}>
           Sign In
         </button>
-        {/* {errorMessage && (
-            <div className={classes.formErrorMessage}>{errorMessage}</div>
-          )} */}
       </form>
       <div className={classes.link_box}>
         <p>Already have an account?</p>
