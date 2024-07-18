@@ -7,14 +7,18 @@ import {
   fetchCategories,
   selectCategories,
 } from "../../redux/categories/categorySlice";
+import { selectAuthState } from "../../redux/auth/authSlice";
 
 function Home() {
   const dispatch = useAppDispatch();
   const categories = useAppSelector(selectCategories);
+  const { isAuth } = useAppSelector(selectAuthState);
 
   useEffect(() => {
-    dispatch(fetchCategories());
-  }, [dispatch]);
+    if (isAuth) {
+      dispatch(fetchCategories());
+    }
+  }, [dispatch, isAuth]);
 
   const handleCategoryClick = (categoryId: number) => {
     // Handle category click logic here (e.g., fetch recipes based on categoryId)

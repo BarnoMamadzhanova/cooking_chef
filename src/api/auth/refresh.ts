@@ -1,5 +1,5 @@
 import { AxiosPromise } from "axios";
-import { axiosInstance } from "../instance";
+import axiosInstance from "../instance";
 import Endpoints from "../endpoints";
 import { IRefreshTokenRequest, IRefreshTokenResponse } from "./types";
 

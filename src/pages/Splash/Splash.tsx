@@ -1,6 +1,6 @@
 import React from "react";
 import classes from "./Splash.module.css";
-import { logo_big } from "../../assests";
+import { logo_big } from "../../assests/index";
 
 function Splash() {
   return (
