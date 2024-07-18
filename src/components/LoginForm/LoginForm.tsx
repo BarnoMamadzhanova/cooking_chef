@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { loginUser, selectAuthState } from "../../redux/auth/authSlice";
 import { loginSchema } from "../../schemas/loginSchema";
 import { visible, invisible, mail } from "../../assests/index";
 import classes from "./LoginForm.module.css";
@@ -8,6 +10,15 @@ import classes from "./LoginForm.module.css";
 function LoginForm() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { isLoading, error } = useAppSelector(selectAuthState);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (error) {
+      setErrorMessage(error);
+    }
+  }, [error]);
 
   const {
     values,
@@ -23,13 +34,24 @@ function LoginForm() {
       password: "",
     },
     validationSchema: loginSchema,
-    onSubmit: (values, actions) => {
+    onSubmit: async (values, actions) => {
+      setErrorMessage(null);
       try {
-        console.log("Login was successful", values);
-        navigate("/home");
+        const resultAction = await dispatch(loginUser(values));
+        if (loginUser.fulfilled.match(resultAction)) {
+          console.log("Login was successful");
+          navigate("/home");
+        } else {
+          if (resultAction.payload) {
+            setErrorMessage(resultAction.payload as string);
+          } else {
+            setErrorMessage("Login failed, please try again.");
+          }
+        }
       } catch (error) {
-        console.log("Login failed", error);
+        setErrorMessage("Login failed, please try again.");
       } finally {
+        actions.setSubmitting(false);
         actions.resetForm();
       }
     },
@@ -93,12 +115,13 @@ function LoginForm() {
           <div className={classes.error_message}>{errors.password}</div>
         )}
 
-        <button type="submit" disabled={isSubmitting}>
-          Sign In
-        </button>
-        {/* {errorMessage && (
+        {errorMessage && (
           <div className={classes.formErrorMessage}>{errorMessage}</div>
-        )} */}
+        )}
+
+        <button type="submit" disabled={isSubmitting || isLoading}>
+          {isLoading ? "Signing In..." : "Sign In"}
+        </button>
       </form>
       <div className={classes.link_box}>
         <p>I don’t have an account?</p>

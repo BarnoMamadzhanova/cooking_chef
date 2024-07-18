@@ -25,8 +25,6 @@
   cursor: pointer;
   background: #fafafa;
   border-radius: 10px;
-  height: 24px;
-  padding: 1rem;
 }
 
 .sidebar {
@@ -42,6 +40,11 @@
   transition: all 0.3s ease;
   cursor: pointer;
   position: relative;
+}
+
+.first_link img {
+  height: 58px;
+  width: 56px;
 }
 
 .first_link::after {
@@ -60,6 +63,11 @@
   gap: 1.5rem;
 }
 
+.links img {
+  height: 24px;
+  width: 24px;
+}
+
 .links .nav_link {
   height: 24px;
   padding: 1rem;
@@ -68,6 +76,24 @@
 .last_link {
   margin-top: auto;
   margin-inline: 0.625rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.logoutButton {
+  border: none;
+  outline: none;
+}
+
+.logoutButton button:hover {
+  background-color: #fa9e31;
+}
+
+.logoutButton img {
+  height: 24px;
+  width: 24px;
 }
 
 .nav_link.active_link {
@@ -76,4 +102,48 @@
 
 .nav_link:hover {
   background-color: #fbbf75fe;
+}
+
+.modal__message {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  z-index: 2;
+}
+
+.modal__message p {
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  text-align: center;
+  line-height: 2.25rem;
+  color: #343434;
+}
+
+.modal_btns {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.modal_btns button {
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5rem;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  background: #fff6de;
+  color: #343434;
+  cursor: pointer;
+  width: 9rem;
+}
+
+.modal_btns button:hover {
+  background-color: #fa9e31;
+  color: #fafafa;
 }

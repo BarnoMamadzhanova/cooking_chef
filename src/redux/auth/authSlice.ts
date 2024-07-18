@@ -114,7 +114,14 @@ const authSlice = createSlice({
       .addCase(logoutUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
-      });
+      })
+      .addMatcher(
+        (action) => action.type.endsWith("/rejected"),
+        (state, action: PayloadAction<string>) => {
+          state.error = action.payload;
+          state.isLoading = false;
+        }
+      );
   },
 });
 
