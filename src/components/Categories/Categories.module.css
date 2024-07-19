@@ -4,38 +4,36 @@
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  gap: 3.5rem;
-  margin-bottom: 2rem;
+  gap: 4rem;
+  margin-block: 0;
+  padding-inline: 0;
 }
 
 .link {
   text-decoration: none;
-  color: black;
+  color: #666666;
   display: block;
-  padding: 0.625rem;
-  font-size: 1.5rem;
+  font-size: 1rem;
   position: relative;
 }
 
 .list li:hover {
-  color: #6a62b7;
+  color: #343434;
   cursor: pointer;
 }
 
 .list .active p {
-  font-weight: 700;
-  color: #6a62b7;
+  font-weight: 500;
+  color: #343434;
 }
 
 .list .active::after {
-  display: block;
   content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 90px;
-  background: #6a62b7;
-  transform: translateX(-50%);
+  display: block;
+  width: 50%;
+  height: 2px;
+  background-color: #343434;
   position: absolute;
-  left: 50%;
-  bottom: -10px;
+  bottom: -2px;
+  left: 25%;
 }

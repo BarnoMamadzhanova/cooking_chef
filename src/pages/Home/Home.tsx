@@ -28,7 +28,7 @@ function Home() {
     <div className={classes.home}>
       <h6 className={classes.user_welcome}>Hi, Sarthak. UI Designer & Cook</h6>
       <div className={classes.category_container}>
-        <h6 className={classes.category}>Category</h6>
+        <p className={classes.category}>Category</p>
         <div className={classes.display_box}>
           <Categories
             categories={categories}

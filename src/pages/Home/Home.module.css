@@ -29,6 +29,7 @@
   font-size: 1.5rem;
   line-height: 2.25rem;
   margin: 0;
+  margin-block: 0;
 }
 
 .display_box {
@@ -36,12 +37,3 @@
   flex-direction: column;
   gap: 1.25rem;
 }
-
-/* .categories {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 4rem;
-  list-style: none;
-} */
