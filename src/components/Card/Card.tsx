@@ -6,7 +6,7 @@ interface CardProps {
   children: ReactNode;
 }
 
-function Card({ image, children }: CardProps) {
+const Card: React.FC<CardProps> = ({ image, children }) => {
   return (
     <div className={classes.card}>
       <div
@@ -17,6 +17,6 @@ function Card({ image, children }: CardProps) {
       </div>
     </div>
   );
-}
+};
 
 export default Card;

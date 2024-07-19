@@ -1,0 +1,17 @@
+.pagination {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.page_button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: #e0e0e0;
+  cursor: pointer;
+}
+
+.page_button.active {
+  background-color: #343434;
+  color: white;
+}

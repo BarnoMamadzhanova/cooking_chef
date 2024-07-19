@@ -1,25 +1,29 @@
 import React from "react";
 import classes from "./CardGrid.module.css";
-// import Card from "../Card/Card";
-// import TextContainer from "../TextContainer/TextContainer";
+import Card from "../Card/Card";
+import TextContainer from "../TextContainer/TextContainer";
+import { IRecipe } from "../../api/recipes/types";
 
-function CardGrid() {
+interface CardGridProps {
+  recipes: IRecipe[];
+}
+
+const CardGrid: React.FC<CardGridProps> = ({ recipes }) => {
   return (
     <div className={classes.card_grid}>
-      {/* {cards.map((card) => (
-      <Card key={card.id} image={card.image}>
-        <TextContainer>
-          <div className={classes.title_box}>
-            <h4>{card.title}</h4>
-            <p>{card.author}</p>
-          </div>
-          <div className={classes.icon_box}>
-          </div>
-        </TextContainer>
-      </Card>
-    ))} */}
+      {recipes.map((recipe) => (
+        <Card key={recipe.id} image={recipe.imageUrl}>
+          <TextContainer>
+            <div className={classes.title_box}>
+              <h4>{recipe.name}</h4>
+              <p>{recipe.authorName}</p>
+            </div>
+            <div className={classes.icon_box}></div>
+          </TextContainer>
+        </Card>
+      ))}
     </div>
   );
-}
+};
 
 export default CardGrid;
