@@ -13,7 +13,7 @@ const CardGrid: React.FC<CardGridProps> = ({ recipes }) => {
   return (
     <div className={classes.card_grid}>
       {recipes.map((recipe) => (
-        <Card key={recipe.id} image={recipe.imageUrl}>
+        <Card key={recipe.id} image={recipe.imageUrl} recipeId={recipe.id}>
           <TextContainer>
             <div className={classes.title_box}>
               <h4>{recipe.name}</h4>

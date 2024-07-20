@@ -36,7 +36,7 @@ const App: React.FC = () => {
           <Route index element={<Login />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/home" element={<ProtectedHome />} />
-          <Route path="/details" element={<ProtectedDetails />} />
+          <Route path="/details/:recipeId" element={<ProtectedDetails />} />
           <Route path="/search" element={<ProtectedSearch />} />
           <Route path="/profile" element={<ProtectedProfile />} />
           <Route path="/chef" element={<ProtectedChef />} />

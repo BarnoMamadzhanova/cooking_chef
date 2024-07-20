@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import classes from "./Categories.module.css";
 
 interface Category {
@@ -15,6 +15,16 @@ const Categories: React.FC<Props> = ({ categories, onCategoryClick }) => {
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
     null
   );
+
+  useEffect(() => {
+    const defaultCategory = categories.find(
+      (category) => category.name.toLowerCase() === "breakfast"
+    );
+    if (defaultCategory) {
+      setSelectedCategoryId(defaultCategory.id);
+      onCategoryClick(defaultCategory.id);
+    }
+  }, [categories, onCategoryClick]);
 
   const handleCategoryClick = (categoryId: number) => {
     setSelectedCategoryId(categoryId);

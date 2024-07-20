@@ -27,8 +27,12 @@ function Home() {
   const error = useAppSelector(selectRecipesError);
   const totalPages = useAppSelector(selectTotalPages);
   const currentPage = useAppSelector(selectCurrentPage);
+
+  const defaultCategory = categories.find(
+    (category) => category.name.toLowerCase() === "breakfast"
+  );
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
-    null
+    defaultCategory ? defaultCategory.id : null
   );
 
   useEffect(() => {
@@ -70,6 +74,7 @@ function Home() {
           />
           {loading && <div>Loading...</div>}
           {error && <div>Error: {error}</div>}
+          {!loading && recipes.length === 0 && <div>No recipes found.</div>}
           <CardGrid recipes={recipes} />
           {totalPages > 1 && (
             <Pagination

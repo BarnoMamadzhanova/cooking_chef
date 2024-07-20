@@ -54,3 +54,31 @@ export interface IRecipeResponse {
   last: boolean;
   empty: boolean;
 }
+
+export interface IRecipeDetail {
+  id: number;
+  name: string;
+  preparationTime: number;
+  description: string;
+  difficulty: "EASY" | "MEDIUM" | "HARD";
+  author: {
+    id: number;
+    name: string;
+  };
+  category: {
+    id: number;
+    name: string;
+  };
+  ingredients: {
+    name: string;
+    quantity: number;
+    measure: "TEASPOON" | "TABLESPOON" | "CUP" | "GRAM" | "LITER" | string;
+    quantityText: string;
+  }[];
+  createdAt: string;
+  imageUrl: string;
+  likesAmount: number;
+  savesAmount: number;
+  isLikedByUser: boolean;
+  isSavedByUser: boolean;
+}

@@ -1,17 +1,21 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { getRecipes } from "../../api/recipes/index";
+import { getRecipes, getRecipeDetails } from "../../api/recipes/index";
 import {
   IRecipe,
   IRecipeParams,
   IRecipeResponse,
+  IRecipeDetail,
 } from "../../api/recipes/types";
 import axios from "axios";
 
 interface RecipeState {
   recipes: IRecipe[];
+  recipeDetail: IRecipeDetail | null;
   loading: boolean;
+  detailLoading: boolean;
   error: string | null;
+  detailError: string | null;
   totalElements: number;
   totalPages: number;
   currentPage: number;
@@ -19,8 +23,11 @@ interface RecipeState {
 
 const initialState: RecipeState = {
   recipes: [],
+  recipeDetail: null,
   loading: false,
+  detailLoading: false,
   error: null,
+  detailError: null,
   totalElements: 0,
   totalPages: 0,
   currentPage: 0,
@@ -31,6 +38,21 @@ export const fetchRecipes = createAsyncThunk(
   async (params: IRecipeParams, { rejectWithValue }) => {
     try {
       const response = await getRecipes(params);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue("An unknown error occurred");
+    }
+  }
+);
+
+export const fetchRecipeDetail = createAsyncThunk(
+  "recipes/fetchRecipeDetail",
+  async (recipeId: number, { rejectWithValue }) => {
+    try {
+      const response = await getRecipeDetails(recipeId);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -65,12 +87,34 @@ const recipeSlice = createSlice({
       state.loading = false;
       state.error = action.payload as string;
     });
+    builder.addCase(fetchRecipeDetail.pending, (state) => {
+      state.detailLoading = true;
+      state.detailError = null;
+    });
+    builder.addCase(
+      fetchRecipeDetail.fulfilled,
+      (state, action: PayloadAction<IRecipeDetail>) => {
+        state.detailLoading = false;
+        state.recipeDetail = action.payload;
+        state.detailError = null;
+      }
+    );
+    builder.addCase(fetchRecipeDetail.rejected, (state, action) => {
+      state.detailLoading = false;
+      state.detailError = action.payload as string;
+    });
   },
 });
 
 export const selectRecipes = (state: RootState) => state.recipes.recipes;
+export const selectRecipeDetail = (state: RootState) =>
+  state.recipes.recipeDetail;
 export const selectRecipesLoading = (state: RootState) => state.recipes.loading;
+export const selectRecipeDetailLoading = (state: RootState) =>
+  state.recipes.detailLoading;
 export const selectRecipesError = (state: RootState) => state.recipes.error;
+export const selectRecipeDetailError = (state: RootState) =>
+  state.recipes.detailError;
 export const selectTotalElements = (state: RootState) =>
   state.recipes.totalElements;
 export const selectTotalPages = (state: RootState) => state.recipes.totalPages;
