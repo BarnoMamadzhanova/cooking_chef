@@ -13,7 +13,7 @@ const Card: React.FC<CardProps> = ({ image, children }) => {
         style={{ backgroundImage: `url(${image})` }}
         className={classes.card_img}
       >
-        {children}
+        <div className={classes.overlay}>{children}</div>
       </div>
     </div>
   );

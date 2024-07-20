@@ -1,21 +1,39 @@
 .card {
+  width: 18.75rem;
+  height: 12.5rem;
   border-radius: 1rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border 0.3s ease;
+  border: 2px solid #ffffff;
+}
+
+.card:hover {
+  border: 2px solid #fa9e31;
 }
 
 .card_img {
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0) 49.93%,
-    rgba(0, 0, 0, 0.61) 100%
-  );
   background-size: cover;
   background-position: center;
   height: 100%;
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
+  border-radius: 1rem;
+  position: relative;
 }
 
-/* background: linear-gradient(180deg, rgba(0, 0, 0, 0) 49.93%, rgba(0, 0, 0, 0.61) 100%), url(.jpg);
-border-radius: 15px; */
+.overlay {
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 49.93%,
+    rgba(0, 0, 0, 0.61) 100%
+  );
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+}

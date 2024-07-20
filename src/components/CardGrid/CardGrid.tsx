@@ -3,6 +3,7 @@ import classes from "./CardGrid.module.css";
 import Card from "../Card/Card";
 import TextContainer from "../TextContainer/TextContainer";
 import { IRecipe } from "../../api/recipes/types";
+import { save, like } from "../../assests";
 
 interface CardGridProps {
   recipes: IRecipe[];
@@ -16,9 +17,18 @@ const CardGrid: React.FC<CardGridProps> = ({ recipes }) => {
           <TextContainer>
             <div className={classes.title_box}>
               <h4>{recipe.name}</h4>
-              <p>{recipe.authorName}</p>
+              <p>by {recipe.authorName}</p>
             </div>
-            <div className={classes.icon_box}></div>
+            <div className={classes.icon_box}>
+              <div className={classes.icons}>
+                <img src={like} alt="liked" />
+                <p>{recipe.likesAmount}</p>
+              </div>
+              <div className={classes.icons}>
+                <img src={save} alt="saved" />
+                <p>{recipe.savesAmount}</p>
+              </div>
+            </div>
           </TextContainer>
         </Card>
       ))}
