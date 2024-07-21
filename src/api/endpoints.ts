@@ -7,6 +7,12 @@ const Endpoints = {
   },
   USERS: {
     USERS_LIST: "/v1/users",
+    USER_PROFILE: "/v1/users/me",
+    UPDATE_PROFILE: "/v1/users/me",
+    USER_BY_ID: "/v1/users/{userId}",
+    GET_USER_RECIPES: "/v1/users/me/recipes",
+    GET_SAVED: "/v1/users/me/recipes/saved",
+    FOLLOW_USER: "/v1/users/{userId}/follow",
   },
   CATEGORIES: {
     CATEGORIES_LIST: "/v1/categories",
@@ -14,7 +20,7 @@ const Endpoints = {
   },
   IMAGE: {
     UPLOAD: "/v1/images/upload",
-    DELETE: "/v1/images/upload",
+    DELETE: "/v1/images/{imageId}",
   },
   RECIPES: {
     RECIPES_LIST: "/v1/recipes",
