@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import {
   fetchRecipeDetail,
+  likeRecipe,
+  saveRecipe,
   selectRecipeDetail,
   selectRecipeDetailLoading,
   selectRecipeDetailError,
@@ -23,6 +25,28 @@ const Details: React.FC = () => {
       dispatch(fetchRecipeDetail(parseInt(recipeId)));
     }
   }, [dispatch, recipeId]);
+
+  const handleLike = () => {
+    if (recipeDetail) {
+      dispatch(likeRecipe({ recipeId: recipeDetail.id }));
+      if (recipeDetail.isLikedByUser) {
+        localStorage.removeItem(`liked_${recipeDetail.id}`);
+      } else {
+        localStorage.setItem(`liked_${recipeDetail.id}`, "true");
+      }
+    }
+  };
+
+  const handleSave = () => {
+    if (recipeDetail) {
+      dispatch(saveRecipe({ recipeId: recipeDetail.id }));
+      if (recipeDetail.isSavedByUser) {
+        localStorage.removeItem(`saved_${recipeDetail.id}`);
+      } else {
+        localStorage.setItem(`saved_${recipeDetail.id}`, "true");
+      }
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -59,13 +83,21 @@ const Details: React.FC = () => {
           <p>{recipeDetail.difficulty}</p>
         </div>
         <div className={classes.icon_box}>
-          <div className={classes.icons}>
-            <img src={like} alt="like" />
+          <div className={classes.icons} onClick={handleLike}>
+            <img
+              src={like}
+              alt="like"
+              className={recipeDetail.isLikedByUser ? classes.liked : ""}
+            />
             <p>{recipeDetail.likesAmount} likes</p>
           </div>
-          <div className={classes.icons}>
-            <img src={save} alt="save" />
-            <p>{recipeDetail.savesAmount}</p>
+          <div className={classes.icons} onClick={handleSave}>
+            <img
+              src={save}
+              alt="save"
+              className={recipeDetail.isSavedByUser ? classes.saved : ""}
+            />
+            <p>{recipeDetail.savesAmount} saves</p>
           </div>
         </div>
         <div className={classes.info_box}>

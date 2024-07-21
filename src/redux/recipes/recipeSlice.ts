@@ -188,23 +188,22 @@ const recipeSlice = createSlice({
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(
-      likeRecipe.fulfilled,
-      (
-        state,
-        action: PayloadAction<{ recipeId: number; response: string }>
-      ) => {
-        state.loading = false;
-        const recipe = state.recipes.find(
-          (r) => r.id === action.payload.recipeId
-        );
-        if (recipe) {
-          recipe.likesAmount += recipe.isLikedByUser ? -1 : 1;
-          recipe.isLikedByUser = !recipe.isLikedByUser;
+    builder.addCase(likeRecipe.fulfilled, (state, action) => {
+      state.loading = false;
+      const recipe = state.recipes.find(
+        (r) => r.id === action.payload.recipeId
+      );
+      if (recipe) {
+        recipe.likesAmount += recipe.isLikedByUser ? -1 : 1;
+        recipe.isLikedByUser = !recipe.isLikedByUser;
+        if (recipe.isLikedByUser) {
+          localStorage.setItem(`liked_${recipe.id}`, "true");
+        } else {
+          localStorage.removeItem(`liked_${recipe.id}`);
         }
-        state.error = null;
       }
-    );
+      state.error = null;
+    });
     builder.addCase(likeRecipe.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string;
@@ -213,23 +212,22 @@ const recipeSlice = createSlice({
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(
-      saveRecipe.fulfilled,
-      (
-        state,
-        action: PayloadAction<{ recipeId: number; response: string }>
-      ) => {
-        state.loading = false;
-        const recipe = state.recipes.find(
-          (r) => r.id === action.payload.recipeId
-        );
-        if (recipe) {
-          recipe.savesAmount += recipe.isSavedByUser ? -1 : 1;
-          recipe.isSavedByUser = !recipe.isSavedByUser;
+    builder.addCase(saveRecipe.fulfilled, (state, action) => {
+      state.loading = false;
+      const recipe = state.recipes.find(
+        (r) => r.id === action.payload.recipeId
+      );
+      if (recipe) {
+        recipe.savesAmount += recipe.isSavedByUser ? -1 : 1;
+        recipe.isSavedByUser = !recipe.isSavedByUser;
+        if (recipe.isSavedByUser) {
+          localStorage.setItem(`saved_${recipe.id}`, "true");
+        } else {
+          localStorage.removeItem(`saved_${recipe.id}`);
         }
-        state.error = null;
       }
-    );
+      state.error = null;
+    });
     builder.addCase(saveRecipe.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string;

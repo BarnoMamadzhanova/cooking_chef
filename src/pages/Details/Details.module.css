@@ -126,6 +126,21 @@
   line-height: 1.25rem;
 }
 
+.icons img {
+  cursor: pointer;
+  transition: filter 0.3s ease;
+}
+
+.icons img.liked {
+  filter: invert(32%) sepia(94%) saturate(7464%) hue-rotate(2deg)
+    brightness(96%) contrast(104%);
+}
+
+.icons img.saved {
+  filter: invert(72%) sepia(63%) saturate(2935%) hue-rotate(3deg)
+    brightness(101%) contrast(97%);
+}
+
 .info_box {
   display: flex;
   flex-direction: column;
