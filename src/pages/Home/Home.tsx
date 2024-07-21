@@ -15,6 +15,7 @@ import {
   selectTotalPages,
   selectCurrentPage,
 } from "../../redux/recipes/recipeSlice";
+import { fetchProfile } from "../../redux/users/userSlice";
 import { selectAuthState } from "../../redux/auth/authSlice";
 import Pagination from "../../components/Pagination/Pagination";
 
@@ -27,6 +28,7 @@ function Home() {
   const error = useAppSelector(selectRecipesError);
   const totalPages = useAppSelector(selectTotalPages);
   const currentPage = useAppSelector(selectCurrentPage);
+  const profile = useAppSelector((state) => state.users.profile);
 
   const defaultCategory = categories.find(
     (category) => category.name.toLowerCase() === "breakfast"
@@ -38,6 +40,7 @@ function Home() {
   useEffect(() => {
     if (isAuth) {
       dispatch(fetchCategories());
+      dispatch(fetchProfile());
     }
   }, [dispatch, isAuth]);
 
@@ -51,7 +54,6 @@ function Home() {
 
   const handleCategoryClick = (categoryId: number) => {
     setSelectedCategoryId(categoryId);
-    console.log("Category clicked:", categoryId);
   };
 
   const handlePageChange = (page: number) => {
@@ -64,7 +66,9 @@ function Home() {
 
   return (
     <div className={classes.home}>
-      <h6 className={classes.user_welcome}>Hi, Sarthak. UI Designer & Cook</h6>
+      <h6 className={classes.user_welcome}>
+        Hi, {profile?.name || "Guest"}. UI Designer & Cook
+      </h6>
       <div className={classes.category_container}>
         <p className={classes.category}>Category</p>
         <div className={classes.display_box}>

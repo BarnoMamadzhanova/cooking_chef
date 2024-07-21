@@ -6,3 +6,37 @@
   gap: 1.5rem;
   padding: 2rem;
 }
+
+.recipe_box {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.user_recipes {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 38rem;
+}
+
+.user_recipes p {
+  color: #343434;
+  cursor: pointer;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.user_recipes p:hover {
+  text-decoration: underline;
+}
+
+.activeTab {
+  color: #666666;
+}
+
+.closeButton {
+  cursor: pointer;
+  margin-top: -10px;
+  float: right;
+}

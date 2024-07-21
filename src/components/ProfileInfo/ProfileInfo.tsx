@@ -1,9 +1,13 @@
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
-import { fetchProfile, updateUserProfile } from "../../redux/users/userSlice";
+import { fetchProfile } from "../../redux/users/userSlice";
 import classes from "./ProfileInfo.module.css";
 
-const UserProfile: React.FC = () => {
+interface UserProfileProps {
+  onManageProfileClick: () => void;
+}
+
+const UserProfile: React.FC<UserProfileProps> = ({ onManageProfileClick }) => {
   const dispatch = useAppDispatch();
   const profile = useAppSelector((state) => state.users.profile);
   const status = useAppSelector((state) => state.users.status);
@@ -12,12 +16,6 @@ const UserProfile: React.FC = () => {
   useEffect(() => {
     dispatch(fetchProfile());
   }, [dispatch]);
-
-  const handleUpdateProfile = () => {
-    dispatch(
-      updateUserProfile({ name: "New Name", bio: "New Bio", profileImageId: 1 })
-    );
-  };
 
   if (status === "loading") return <div>Loading...</div>;
   if (status === "failed") return <div>Error: {error}</div>;
@@ -47,7 +45,7 @@ const UserProfile: React.FC = () => {
               <p>{profile.bio}</p>
             </div>
             <button
-              onClick={handleUpdateProfile}
+              onClick={onManageProfileClick}
               className={classes.profile_btn}
             >
               Manage Profile

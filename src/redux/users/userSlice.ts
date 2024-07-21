@@ -10,6 +10,8 @@ import { IRecipeResponse } from "../../api/recipes/types";
 interface UserState {
   profile: IUserProfile | null;
   users: IUserListResponse | null;
+  userRecipes: IRecipeResponse | null;
+  savedRecipes: IRecipeResponse | null;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
@@ -17,6 +19,8 @@ interface UserState {
 const initialState: UserState = {
   profile: null,
   users: null,
+  userRecipes: null,
+  savedRecipes: null,
   status: "idle",
   error: null,
 };
@@ -166,6 +170,7 @@ const userSlice = createSlice({
         fetchUserRecipes.fulfilled,
         (state, action: PayloadAction<IRecipeResponse>) => {
           state.status = "succeeded";
+          state.userRecipes = action.payload;
         }
       )
       .addCase(fetchUserRecipes.rejected, (state, action) => {
@@ -181,6 +186,7 @@ const userSlice = createSlice({
         fetchSavedRecipes.fulfilled,
         (state, action: PayloadAction<IRecipeResponse>) => {
           state.status = "succeeded";
+          state.savedRecipes = action.payload;
         }
       )
       .addCase(fetchSavedRecipes.rejected, (state, action) => {
