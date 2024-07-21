@@ -1,11 +1,19 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { getRecipes, getRecipeDetails } from "../../api/recipes/index";
+import {
+  getRecipes,
+  getRecipeDetails,
+  addRecipe,
+  toggleLike,
+  toggleSave,
+} from "../../api/recipes/index";
 import {
   IRecipe,
   IRecipeParams,
   IRecipeResponse,
   IRecipeDetail,
+  ICreateRecipe,
+  IToggleAction,
 } from "../../api/recipes/types";
 import axios from "axios";
 
@@ -63,6 +71,51 @@ export const fetchRecipeDetail = createAsyncThunk(
   }
 );
 
+export const createRecipe = createAsyncThunk(
+  "recipes/createRecipe",
+  async (recipeData: ICreateRecipe, { rejectWithValue }) => {
+    try {
+      const response = await addRecipe(recipeData);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue("An unknown error occurred");
+    }
+  }
+);
+
+export const likeRecipe = createAsyncThunk(
+  "recipes/likeRecipe",
+  async ({ recipeId }: IToggleAction, { rejectWithValue }) => {
+    try {
+      const response = await toggleLike(recipeId);
+      return { recipeId, response: response.data };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue("An unknown error occurred");
+    }
+  }
+);
+
+export const saveRecipe = createAsyncThunk(
+  "recipes/saveRecipe",
+  async ({ recipeId }: IToggleAction, { rejectWithValue }) => {
+    try {
+      const response = await toggleSave(recipeId);
+      return { recipeId, response: response.data };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue("An unknown error occurred");
+    }
+  }
+);
+
 const recipeSlice = createSlice({
   name: "recipes",
   initialState,
@@ -102,6 +155,84 @@ const recipeSlice = createSlice({
     builder.addCase(fetchRecipeDetail.rejected, (state, action) => {
       state.detailLoading = false;
       state.detailError = action.payload as string;
+    });
+    builder.addCase(createRecipe.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(
+      createRecipe.fulfilled,
+      (state, action: PayloadAction<IRecipeDetail>) => {
+        state.loading = false;
+        const newRecipe: IRecipe = {
+          id: action.payload.id,
+          name: action.payload.name,
+          preparationTime: action.payload.preparationTime,
+          category: action.payload.category,
+          imageUrl: action.payload.imageUrl,
+          authorName: action.payload.author.name,
+          likesAmount: action.payload.likesAmount,
+          savesAmount: action.payload.savesAmount,
+          isLikedByUser: action.payload.isLikedByUser,
+          isSavedByUser: action.payload.isSavedByUser,
+        };
+        state.recipes.push(newRecipe);
+        state.error = null;
+      }
+    );
+    builder.addCase(createRecipe.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    });
+    builder.addCase(likeRecipe.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(
+      likeRecipe.fulfilled,
+      (
+        state,
+        action: PayloadAction<{ recipeId: number; response: string }>
+      ) => {
+        state.loading = false;
+        const recipe = state.recipes.find(
+          (r) => r.id === action.payload.recipeId
+        );
+        if (recipe) {
+          recipe.likesAmount += recipe.isLikedByUser ? -1 : 1;
+          recipe.isLikedByUser = !recipe.isLikedByUser;
+        }
+        state.error = null;
+      }
+    );
+    builder.addCase(likeRecipe.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    });
+    builder.addCase(saveRecipe.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(
+      saveRecipe.fulfilled,
+      (
+        state,
+        action: PayloadAction<{ recipeId: number; response: string }>
+      ) => {
+        state.loading = false;
+        const recipe = state.recipes.find(
+          (r) => r.id === action.payload.recipeId
+        );
+        if (recipe) {
+          recipe.savesAmount += recipe.isSavedByUser ? -1 : 1;
+          recipe.isSavedByUser = !recipe.isSavedByUser;
+        }
+        state.error = null;
+      }
+    );
+    builder.addCase(saveRecipe.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
     });
   },
 });

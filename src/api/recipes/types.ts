@@ -12,6 +12,8 @@ export interface IRecipe {
   authorName: string;
   likesAmount: number;
   savesAmount: number;
+  isLikedByUser: boolean;
+  isSavedByUser: boolean;
 }
 
 export interface IRecipeParams {
@@ -81,4 +83,22 @@ export interface IRecipeDetail {
   savesAmount: number;
   isLikedByUser: boolean;
   isSavedByUser: boolean;
+}
+
+export interface ICreateRecipe {
+  name: string;
+  preparationTime: number;
+  description: string;
+  difficulty: "EASY" | "MEDIUM" | "HARD";
+  imageId: number;
+  categoryId: number;
+  ingredients: {
+    name: string;
+    quantity: number;
+    measure: string;
+  }[];
+}
+
+export interface IToggleAction {
+  recipeId: number;
 }
