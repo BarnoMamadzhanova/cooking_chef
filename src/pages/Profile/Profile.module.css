@@ -35,8 +35,19 @@
   color: #666666;
 }
 
-.closeButton {
+.modal_profile {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+/* .update_title {
+  display: ;
+} */
+
+/* .closeButton {
   cursor: pointer;
   margin-top: -10px;
   float: right;
-}
+} */

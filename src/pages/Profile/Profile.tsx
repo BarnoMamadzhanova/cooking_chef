@@ -106,14 +106,16 @@ function Profile() {
           <p>You don't have recipes</p>
         )}
         <Modal active={isModalActive} setActive={setIsModalActive}>
-          <div>
-            <h3>Update Profile</h3>
-            <img
-              src={close}
-              alt="close"
-              onClick={handleCloseModal}
-              className={classes.closeButton}
-            />
+          <div className={classes.modal_profile}>
+            <div className={classes.update_title}>
+              <h3>Update Profile</h3>
+              <img
+                src={close}
+                alt="close"
+                onClick={handleCloseModal}
+                className={classes.closeButton}
+              />
+            </div>
           </div>
           <form onSubmit={handleSubmit}>
             <label htmlFor="name">
