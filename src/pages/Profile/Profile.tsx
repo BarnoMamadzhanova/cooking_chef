@@ -5,11 +5,13 @@ import {
   fetchUserRecipes,
   updateUserProfile,
 } from "../../redux/users/userSlice";
+import { uploadImageAsync } from "../../redux/images/imageSlice";
 import UserProfile from "../../components/ProfileInfo/ProfileInfo";
 import CardGrid from "../../components/CardGrid/CardGrid";
 import Modal from "../../components/Modal/Modal";
 import { close, camera } from "../../assests";
 import classes from "./Profile.module.css";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 function Profile() {
   const dispatch = useAppDispatch();
@@ -80,13 +82,28 @@ function Profile() {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Handle file upload here and update profileImageId
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const actionResult = await dispatch(
+          uploadImageAsync({ file: formData })
+        );
+        const result = unwrapResult(actionResult);
+        if (result) {
+          setProfileData((prevData) => ({
+            ...prevData,
+            profileImageId: result.id,
+          }));
+        }
+      } catch (error) {
+        console.error("Failed to upload image:", error);
+      }
     }
   };
-
   return (
     <div className={classes.profile}>
       <UserProfile onManageProfileClick={handleManageProfileClick} />
@@ -157,7 +174,9 @@ function Profile() {
                 />
               </div>
             </label>
-            <button type="submit">Save changes</button>
+            <button type="submit" className={classes.update_btn}>
+              Save changes
+            </button>
           </form>
         </Modal>
       </div>

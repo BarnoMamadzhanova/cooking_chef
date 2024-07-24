@@ -1,5 +1,13 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axiosInstance from "../../api/instance";
+import {
+  getProfile,
+  getUsers,
+  getSavedRecipes,
+  getUserById,
+  getUserRecipes,
+  updateProfile,
+  followUser,
+} from "../../api/users/index";
 import {
   IUserProfile,
   IUserListResponse,
@@ -26,71 +34,48 @@ const initialState: UserState = {
 };
 
 export const fetchProfile = createAsyncThunk("users/fetchProfile", async () => {
-  const response = await axiosInstance.get<IUserProfile>("/v1/users/me");
-  return response.data;
+  return await getProfile();
 });
 
 export const fetchUsers = createAsyncThunk(
   "users/fetchUsers",
   async (params: { searchTerm?: string; page?: number; size?: number }) => {
-    const response = await axiosInstance.get<IUserListResponse>("/v1/users", {
-      params,
-    });
-    return response.data;
+    return await getUsers(params.searchTerm, params.page, params.size);
   }
 );
 
 export const updateUserProfile = createAsyncThunk(
   "users/updateUserProfile",
   async (profile: IUpdateUserProfile) => {
-    const response = await axiosInstance.patch<IUserProfile>(
-      "/v1/users/me",
-      profile
-    );
-    return response.data;
+    return await updateProfile(profile);
   }
 );
 
 export const fetchUserById = createAsyncThunk(
   "users/fetchUserById",
   async (userId: number) => {
-    const response = await axiosInstance.get<IUserProfile>(
-      `/v1/users/${userId}`
-    );
-    return response.data;
+    return await getUserById(userId);
   }
 );
 
 export const fetchUserRecipes = createAsyncThunk(
   "users/fetchUserRecipes",
   async (params: { page?: number; size?: number }) => {
-    const response = await axiosInstance.get<IRecipeResponse>(
-      "/v1/users/me/recipes",
-      {
-        params,
-      }
-    );
-    return response.data;
+    return await getUserRecipes(params.page, params.size);
   }
 );
 
 export const fetchSavedRecipes = createAsyncThunk(
   "users/fetchSavedRecipes",
   async (params: { page?: number; size?: number }) => {
-    const response = await axiosInstance.get<IRecipeResponse>(
-      "/v1/users/me/recipes/saved",
-      {
-        params,
-      }
-    );
-    return response.data;
+    return await getSavedRecipes(params.page, params.size);
   }
 );
 
-export const followUser = createAsyncThunk(
+export const followUserAsync = createAsyncThunk(
   "users/followUser",
   async (userId: number) => {
-    await axiosInstance.post(`/v1/users/${userId}/follow`);
+    await followUser(userId);
   }
 );
 
@@ -195,13 +180,13 @@ const userSlice = createSlice({
       });
 
     builder
-      .addCase(followUser.pending, (state) => {
+      .addCase(followUserAsync.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(followUser.fulfilled, (state) => {
+      .addCase(followUserAsync.fulfilled, (state) => {
         state.status = "succeeded";
       })
-      .addCase(followUser.rejected, (state, action) => {
+      .addCase(followUserAsync.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message || "Failed to follow user";
       });

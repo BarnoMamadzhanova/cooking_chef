@@ -21,7 +21,11 @@ export const uploadImageAsync = createAsyncThunk(
       const response = await uploadImage(imageData);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue("Failed to upload image");
+      }
     }
   }
 );
@@ -33,7 +37,11 @@ export const deleteImageAsync = createAsyncThunk(
       const response = await deleteImage(imageId);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.response.data);
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue("Failed to delete image");
+      }
     }
   }
 );
@@ -53,7 +61,7 @@ const imageSlice = createSlice({
       })
       .addCase(uploadImageAsync.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.error.message || "Failed to upload image";
+        state.error = (action.payload as string) || "Failed to upload image";
       })
       .addCase(deleteImageAsync.pending, (state) => {
         state.status = "loading";
@@ -66,7 +74,7 @@ const imageSlice = createSlice({
       })
       .addCase(deleteImageAsync.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.error.message || "Failed to delete image";
+        state.error = (action.payload as string) || "Failed to delete image";
       });
   },
 });
