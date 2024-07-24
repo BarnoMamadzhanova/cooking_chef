@@ -3,6 +3,7 @@ import authReducer from "./auth/authSlice";
 import categoryReducer from "./categories/categorySlice";
 import recipeReducer from "./recipes/recipeSlice";
 import userReducer from "./users/userSlice";
+import imageReducer from "./images/imageSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     categories: categoryReducer,
     recipes: recipeReducer,
     users: userReducer,
+    images: imageReducer,
   },
 });
 
