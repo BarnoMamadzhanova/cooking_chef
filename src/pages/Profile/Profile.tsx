@@ -8,7 +8,7 @@ import {
 import UserProfile from "../../components/ProfileInfo/ProfileInfo";
 import CardGrid from "../../components/CardGrid/CardGrid";
 import Modal from "../../components/Modal/Modal";
-import { close } from "../../assests";
+import { close, camera } from "../../assests";
 import classes from "./Profile.module.css";
 
 function Profile() {
@@ -79,6 +79,14 @@ function Profile() {
       console.error("Failed to update profile:", error);
     }
   };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Handle file upload here and update profileImageId
+    }
+  };
+
   return (
     <div className={classes.profile}>
       <UserProfile onManageProfileClick={handleManageProfileClick} />
@@ -117,27 +125,37 @@ function Profile() {
               />
             </div>
           </div>
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="name">
+          <form onSubmit={handleSubmit} className={classes.update_form}>
+            <label htmlFor="name" className={classes.update_label}>
               Change your name
               <input
                 type="text"
                 name="name"
                 value={profileData.name}
                 onChange={handleInputChange}
+                className={classes.update_input}
               />
             </label>
-            <label htmlFor="bio">
+            <label htmlFor="bio" className={classes.update_label}>
               Change your bio
               <textarea
                 name="bio"
                 value={profileData.bio}
                 onChange={handleInputChange}
+                className={classes.update_input}
               ></textarea>
             </label>
-            <label htmlFor="profile_photo">
+            <label htmlFor="profile_photo" className={classes.update_label}>
               Add a profile photo:
-              <input type="file" name="profileImageId" onChange={(e) => {}} />
+              <div className={classes.update_image_container}>
+                <img src={camera} alt="img" />
+                <input
+                  type="file"
+                  name="profile_photo"
+                  onChange={handleFileChange}
+                  className={classes.update_input}
+                />
+              </div>
             </label>
             <button type="submit">Save changes</button>
           </form>
