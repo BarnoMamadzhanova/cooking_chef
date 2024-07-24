@@ -10,7 +10,10 @@ export const setupAxiosInterceptors = (accessToken?: string) => {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
 
-    if (config.url?.includes("v1/auth")) {
+    if (
+      config.url?.includes("v1/auth") ||
+      config.url?.includes("v1/images/upload")
+    ) {
       config.headers["Content-Type"] = "application/json";
     }
     return config;
