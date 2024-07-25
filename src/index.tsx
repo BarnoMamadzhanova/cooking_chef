@@ -8,14 +8,20 @@ import "./styles/index.css";
 import { store, RootState } from "./redux/store";
 import { setupAxiosInterceptors } from "./api/instance";
 
+const getAccessToken = (state: RootState) => state.auth.accessToken;
+const getRefreshToken = (state: RootState) =>
+  state.auth.refreshToken ?? localStorage.getItem("refreshToken");
+
 const AppWrapper: React.FC = () => {
-  const accessToken = useAppSelector(
-    (state: RootState) => state.auth.accessToken
-  );
+  const accessToken = useAppSelector(getAccessToken);
+  const refreshToken = useAppSelector(getRefreshToken);
 
   useEffect(() => {
-    setupAxiosInterceptors(accessToken ?? undefined);
-  }, [accessToken]);
+    setupAxiosInterceptors(
+      () => accessToken,
+      () => refreshToken
+    );
+  }, [accessToken, refreshToken]);
 
   return <App />;
 };

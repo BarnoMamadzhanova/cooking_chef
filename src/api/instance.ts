@@ -1,11 +1,29 @@
 import axios from "axios";
+import { refreshAccessToken } from "./auth";
+// import { store } from "../redux/store";
+import { updateAccessToken, setAuthState } from "../redux/storeUtils";
 
 const axiosInstance = axios.create({
   baseURL: "https://cookscorner.fun/api",
 });
 
-export const setupAxiosInterceptors = (accessToken?: string) => {
+let isRefreshing = false;
+let refreshSubscribers: ((token: string) => void)[] = [];
+
+function onRefreshed(token: string) {
+  refreshSubscribers.map((callback) => callback(token));
+}
+
+function addSubscriber(callback: (token: string) => void) {
+  refreshSubscribers.push(callback);
+}
+
+export const setupAxiosInterceptors = (
+  getAccessToken: () => string | null,
+  getRefreshToken: () => string | null
+) => {
   axiosInstance.interceptors.request.use((config) => {
+    const accessToken = getAccessToken();
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -21,9 +39,43 @@ export const setupAxiosInterceptors = (accessToken?: string) => {
 
   axiosInstance.interceptors.response.use(
     (response) => response,
-    (error) => {
-      if (error.response?.status === 401) {
-        console.error("Unauthorized access - please login");
+    async (error) => {
+      const originalRequest = error.config;
+      if (error.response?.status === 401 && !originalRequest._retry) {
+        if (isRefreshing) {
+          return new Promise((resolve) => {
+            addSubscriber((token: string) => {
+              originalRequest.headers.Authorization = `Bearer ${token}`;
+              resolve(axiosInstance(originalRequest));
+            });
+          });
+        }
+
+        originalRequest._retry = true;
+        isRefreshing = true;
+
+        const refreshToken = getRefreshToken();
+
+        if (refreshToken) {
+          try {
+            const response = await refreshAccessToken({ refreshToken });
+            const newAccessToken = response.data.accessToken;
+            updateAccessToken(newAccessToken);
+            axios.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${newAccessToken}`;
+            originalRequest.headers[
+              "Authorization"
+            ] = `Bearer ${newAccessToken}`;
+            isRefreshing = false;
+            onRefreshed(newAccessToken);
+            return axiosInstance(originalRequest);
+          } catch (refreshError) {
+            isRefreshing = false;
+            setAuthState(false);
+            return Promise.reject(refreshError);
+          }
+        }
       }
       return Promise.reject(error);
     }
