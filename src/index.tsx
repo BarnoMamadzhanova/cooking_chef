@@ -6,7 +6,7 @@ import { useAppSelector } from "./redux/hook";
 import App from "./App";
 import "./styles/index.css";
 import { store, RootState } from "./redux/store";
-import { setupAxiosInterceptors } from "./api/instance";
+import { setupAxiosInterceptors } from "./api/setupInterceptors";
 
 const getAccessToken = (state: RootState) => state.auth.accessToken;
 const getRefreshToken = (state: RootState) =>
