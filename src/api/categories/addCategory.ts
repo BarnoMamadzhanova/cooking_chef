@@ -6,5 +6,7 @@ import Endpoints from "../endpoints";
 export const addCategory = (
   newCategory: INewCategory
 ): Promise<AxiosResponse<ICategory>> => {
-  return axiosInstance.post(Endpoints.CATEGORIES.NEW_CATEGORY, newCategory);
+  return axiosInstance.post(Endpoints.CATEGORIES.NEW_CATEGORY, newCategory, {
+    headers: { "Content-Type": "application/json" },
+  });
 };
