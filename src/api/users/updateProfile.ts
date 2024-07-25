@@ -8,7 +8,10 @@ export const updateProfile = async (
   try {
     const response = await axiosInstance.patch<IUserProfile>(
       Endpoints.USERS.UPDATE_PROFILE,
-      data
+      data,
+      {
+        headers: { "Content-Type": "application/json" },
+      }
     );
 
     return response.data;
