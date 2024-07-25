@@ -4,6 +4,7 @@ export interface IUserProfile {
   id: number;
   name: string;
   bio: string;
+  profileImageId: number;
   profileImageUrl: string;
   recipeCount: number;
   followerCount: number;

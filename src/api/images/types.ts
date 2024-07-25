@@ -1,7 +1,7 @@
 //image
 
-export interface IImage {
-  file: FormData;
+export interface IImageRequest {
+  file: string;
 }
 
 export interface IUploadedImage {

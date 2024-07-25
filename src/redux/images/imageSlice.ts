@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IImage, IUploadedImage } from "../../api/images/types";
+import { IUploadedImage, IImageRequest } from "../../api/images/types";
 import { uploadImage, deleteImage } from "../../api/images";
+import { fileToBase64 } from "../../api/images/uploadImage";
 
 interface ImageState {
   images: IUploadedImage[];
@@ -16,8 +17,12 @@ const initialState: ImageState = {
 
 export const uploadImageAsync = createAsyncThunk(
   "images/upload",
-  async (imageData: IImage, { rejectWithValue }) => {
+  async (file: File, { rejectWithValue }) => {
     try {
+      const base64File = await fileToBase64(file);
+
+      const imageData: IImageRequest = { file: base64File };
+
       const response = await uploadImage(imageData);
       return response.data;
     } catch (error: any) {

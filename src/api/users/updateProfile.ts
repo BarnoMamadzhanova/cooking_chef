@@ -1,12 +1,19 @@
 import axiosInstance from "../instance";
 import { IUpdateUserProfile, IUserProfile } from "./types";
+import Endpoints from "../endpoints";
 
 export const updateProfile = async (
   data: IUpdateUserProfile
 ): Promise<IUserProfile> => {
-  const response = await axiosInstance.patch<IUserProfile>(
-    "/v1/users/me",
-    data
-  );
-  return response.data;
+  try {
+    const response = await axiosInstance.patch<IUserProfile>(
+      Endpoints.USERS.UPDATE_PROFILE,
+      data
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    throw error;
+  }
 };

@@ -12,16 +12,13 @@ import Modal from "../../components/Modal/Modal";
 import { close, camera } from "../../assests";
 import classes from "./Profile.module.css";
 import { unwrapResult } from "@reduxjs/toolkit";
+import { useFormik } from "formik";
+import { updateSchema } from "../../schemas/updateSchema";
 
 function Profile() {
   const dispatch = useAppDispatch();
   const [activeTab, setActiveTab] = useState<"my" | "saved">("my");
   const [isModalActive, setIsModalActive] = useState<boolean>(false);
-  const [profileData, setProfileData] = useState({
-    name: "",
-    bio: "",
-    profileImageId: 0,
-  });
 
   const userRecipes = useAppSelector(
     (state) => state.users.userRecipes?.content || []
@@ -32,6 +29,42 @@ function Profile() {
   const status = useAppSelector((state) => state.users.status);
   const profile = useAppSelector((state) => state.users.profile);
 
+  const formik = useFormik({
+    initialValues: {
+      name: profile?.name || "",
+      bio: profile?.bio || "",
+      profileImageId: 0,
+      profileImageUrl: profile?.profileImageUrl || "",
+    },
+    validationSchema: updateSchema,
+    onSubmit: async (values) => {
+      try {
+        await dispatch(
+          updateUserProfile({
+            name: values.name,
+            bio: values.bio,
+            profileImageId: values.profileImageId,
+          })
+        );
+        handleCloseModal();
+      } catch (error) {
+        console.error("Failed to update profile:", error);
+      }
+    },
+  });
+
+  useEffect(() => {
+    console.log("Profile changed:", profile);
+    if (profile) {
+      formik.setValues({
+        name: profile.name,
+        bio: profile.bio,
+        profileImageId: profile.profileImageId || 0,
+        profileImageUrl: profile.profileImageUrl || "",
+      });
+    }
+  }, [profile]);
+
   useEffect(() => {
     if (activeTab === "my") {
       dispatch(fetchUserRecipes({}));
@@ -39,16 +72,6 @@ function Profile() {
       dispatch(fetchSavedRecipes({}));
     }
   }, [dispatch, activeTab]);
-
-  useEffect(() => {
-    if (profile) {
-      setProfileData({
-        name: profile.name,
-        bio: profile.bio,
-        profileImageId: 0,
-      });
-    }
-  }, [profile]);
 
   const handleTabChange = (tab: "my" | "saved") => {
     setActiveTab(tab);
@@ -62,48 +85,30 @@ function Profile() {
     setIsModalActive(false);
   };
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setProfileData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      await dispatch(updateUserProfile(profileData));
-      handleCloseModal();
-    } catch (error) {
-      console.error("Failed to update profile:", error);
-    }
-  };
-
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append("file", file);
-
+    if (
+      file &&
+      ["image/jpeg", "image/png", "image/svg+xml"].includes(file.type)
+    ) {
       try {
-        const actionResult = await dispatch(
-          uploadImageAsync({ file: formData })
-        );
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const actionResult = await dispatch(uploadImageAsync(file));
         const result = unwrapResult(actionResult);
         if (result) {
-          setProfileData((prevData) => ({
-            ...prevData,
-            profileImageId: result.id,
-          }));
+          formik.setFieldValue("profileImageId", result.id);
+          formik.setFieldValue("profileImageUrl", result.imageUrl);
         }
       } catch (error) {
         console.error("Failed to upload image:", error);
       }
+    } else {
+      alert("Please select a valid image file (jpg, png, svg).");
     }
   };
+
   return (
     <div className={classes.profile}>
       <UserProfile onManageProfileClick={handleManageProfileClick} />
@@ -142,32 +147,40 @@ function Profile() {
               />
             </div>
           </div>
-          <form onSubmit={handleSubmit} className={classes.update_form}>
+          <form onSubmit={formik.handleSubmit} className={classes.update_form}>
             <label htmlFor="name" className={classes.update_label}>
               Change your name
               <input
                 type="text"
+                id="name"
                 name="name"
-                value={profileData.name}
-                onChange={handleInputChange}
+                value={formik.values.name}
+                onChange={formik.handleChange}
                 className={classes.update_input}
               />
+              {formik.errors.name && <div>{formik.errors.name}</div>}
             </label>
             <label htmlFor="bio" className={classes.update_label}>
               Change your bio
               <textarea
+                id="bio"
                 name="bio"
-                value={profileData.bio}
-                onChange={handleInputChange}
+                value={formik.values.bio}
+                onChange={formik.handleChange}
                 className={classes.update_input}
               ></textarea>
+              {formik.errors.bio && <div>{formik.errors.bio}</div>}
             </label>
             <label htmlFor="profile_photo" className={classes.update_label}>
               Add a profile photo:
               <div className={classes.update_image_container}>
+                {/* {formik.values.profileImageUrl && (
+                  <img src={formik.values.profileImageUrl} alt="Profile" />
+                )} */}
                 <img src={camera} alt="img" />
                 <input
                   type="file"
+                  id="profile_photo"
                   name="profile_photo"
                   onChange={handleFileChange}
                   className={classes.update_input}
