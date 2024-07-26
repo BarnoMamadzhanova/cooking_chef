@@ -1,6 +1,6 @@
 import React from "react";
 import classes from "./Search.module.css";
-import { plus } from "../../assests";
+import { plus, close_input, search } from "../../assests";
 import Modal from "../../components/Modal/Modal";
 
 function Search() {
@@ -12,13 +12,14 @@ function Search() {
           <span>Chefs</span>
           <span>Recipes</span>
         </div>
-        <div className={classes.search_container}>
-          <form>
-            <label htmlFor="search">
+        <form className={classes.search_form}>
+          <div className={classes.search_container}>
+            <label htmlFor="search" className={classes.search_label}>
               <input type="search" placeholder="Search recipes" />
+              <img src={search} alt="search" />
             </label>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
       <div className={classes.add_recipe}>
         <button>
