@@ -14,7 +14,6 @@ import classes from "./Profile.module.css";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useFormik } from "formik";
 import { updateSchema } from "../../schemas/updateSchema";
-import { number, string } from "yup";
 
 function Profile() {
   const dispatch = useAppDispatch();
