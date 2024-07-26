@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
 import {
   getProfile,
   getUsers,
@@ -33,49 +34,114 @@ const initialState: UserState = {
   error: null,
 };
 
-export const fetchProfile = createAsyncThunk("users/fetchProfile", async () => {
-  return await getProfile();
-});
+export const fetchProfile = createAsyncThunk(
+  "users/fetchProfile",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await getProfile();
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue("An unknown error occurred");
+    }
+  }
+);
 
 export const fetchUsers = createAsyncThunk(
   "users/fetchUsers",
-  async (params: { searchTerm?: string; page?: number; size?: number }) => {
-    return await getUsers(params.searchTerm, params.page, params.size);
+  async (
+    params: { searchTerm?: string; page?: number; size?: number },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await getUsers(
+        params.searchTerm,
+        params.page,
+        params.size
+      );
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue("An unknown error occurred");
+    }
   }
 );
 
 export const updateUserProfile = createAsyncThunk(
   "users/updateUserProfile",
-  async (profile: IUpdateUserProfile) => {
-    return await updateProfile(profile);
+  async (profile: IUpdateUserProfile, { rejectWithValue }) => {
+    try {
+      const response = await updateProfile(profile);
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue("An unknown error occurred");
+    }
   }
 );
 
 export const fetchUserById = createAsyncThunk(
   "users/fetchUserById",
-  async (userId: number) => {
-    return await getUserById(userId);
+  async (userId: number, { rejectWithValue }) => {
+    try {
+      const response = await getUserById(userId);
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue("An unknown error occurred");
+    }
   }
 );
 
 export const fetchUserRecipes = createAsyncThunk(
   "users/fetchUserRecipes",
-  async (params: { page?: number; size?: number }) => {
-    return await getUserRecipes(params.page, params.size);
+  async (params: { page?: number; size?: number }, { rejectWithValue }) => {
+    try {
+      const response = await getUserRecipes(params.page, params.size);
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue("An unknown error occurred");
+    }
   }
 );
 
 export const fetchSavedRecipes = createAsyncThunk(
   "users/fetchSavedRecipes",
-  async (params: { page?: number; size?: number }) => {
-    return await getSavedRecipes(params.page, params.size);
+  async (params: { page?: number; size?: number }, { rejectWithValue }) => {
+    try {
+      const response = await getSavedRecipes(params.page, params.size);
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue("An unknown error occurred");
+    }
   }
 );
 
 export const followUserAsync = createAsyncThunk(
   "users/followUser",
-  async (userId: number) => {
-    await followUser(userId);
+  async (userId: number, { rejectWithValue }) => {
+    try {
+      await followUser(userId);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue("An unknown error occurred");
+    }
   }
 );
 

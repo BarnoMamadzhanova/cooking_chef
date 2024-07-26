@@ -61,7 +61,6 @@ function Profile() {
   });
 
   useEffect(() => {
-    console.log("Profile changed:", profile);
     if (profile) {
       formik.setValues({
         name: profile.name,
@@ -94,7 +93,6 @@ function Profile() {
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    console.log(file);
     if (file) {
       setPreviewImage(URL.createObjectURL(file));
 

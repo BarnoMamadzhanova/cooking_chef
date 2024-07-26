@@ -48,6 +48,12 @@
   transition: all 0.3s ease-in;
 }
 
+.search_tabs .active {
+  color: #fafafa;
+  background: #fa9e31;
+  border-radius: 100px;
+}
+
 .search_tabs span:hover {
   color: #fafafa;
   background: #fa9e31;
