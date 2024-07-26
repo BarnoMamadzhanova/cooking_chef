@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { useAppDispatch } from "../../redux/hook";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import classes from "./Search.module.css";
 import { plus, search, close } from "../../assests";
 import Modal from "../../components/Modal/Modal";
-import { fetchRecipes } from "../../redux/recipes/recipeSlice";
-import { fetchUsers } from "../../redux/users/userSlice";
+import {
+  fetchRecipes,
+  selectRecipes,
+  clearRecipes,
+} from "../../redux/recipes/recipeSlice";
+import {
+  fetchUsers,
+  selectUsers,
+  clearUsers,
+} from "../../redux/users/userSlice";
 import useDebounce from "../../components/Hook/useDebounce";
+import CardGrid from "../../components/CardGrid/CardGrid";
+import SearchCardGrid from "../../components/SearchGrid/SearchGrid";
 
 const Search: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"Recipes" | "Chefs">("Recipes");
@@ -13,8 +23,16 @@ const Search: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useAppDispatch();
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  const recipes = useAppSelector(selectRecipes);
+  const users = useAppSelector(selectUsers);
 
   useEffect(() => {
+    if (activeTab === "Recipes") {
+      dispatch(clearUsers());
+    } else {
+      dispatch(clearRecipes());
+    }
+
     if (debouncedSearchTerm) {
       if (activeTab === "Recipes") {
         dispatch(fetchRecipes({ searchTerm: debouncedSearchTerm }));
@@ -28,8 +46,10 @@ const Search: React.FC = () => {
     e.preventDefault();
     if (searchTerm) {
       if (activeTab === "Recipes") {
+        dispatch(clearUsers());
         dispatch(fetchRecipes({ searchTerm }));
       } else {
+        dispatch(clearRecipes());
         dispatch(fetchUsers({ searchTerm }));
       }
     }
@@ -38,8 +58,10 @@ const Search: React.FC = () => {
   const handleSearchIconClick = () => {
     if (searchTerm) {
       if (activeTab === "Recipes") {
+        dispatch(clearUsers());
         dispatch(fetchRecipes({ searchTerm }));
       } else {
+        dispatch(clearRecipes());
         dispatch(fetchUsers({ searchTerm }));
       }
     }
@@ -47,6 +69,9 @@ const Search: React.FC = () => {
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  const recipeList = recipes;
+  const userList = users ? users.content : [];
 
   return (
     <div className={classes.search}>
@@ -80,6 +105,17 @@ const Search: React.FC = () => {
           </div>
         </form>
       </div>
+
+      {activeTab === "Recipes" && recipes.length === 0 && (
+        <p>No recipes found</p>
+      )}
+
+      {activeTab === "Chefs" && userList.length === 0 && <p>No chefs found</p>}
+
+      {activeTab === "Recipes" && <CardGrid recipes={recipeList} />}
+
+      {activeTab === "Chefs" && <SearchCardGrid users={userList} />}
+
       <div className={classes.add_recipe}>
         <button onClick={openModal}>
           <img src={plus} alt="add" />
@@ -95,7 +131,6 @@ const Search: React.FC = () => {
             onClick={closeModal}
             className={classes.closeButton}
           />
-          {/* Add the form for creating a recipe here */}
         </Modal>
       )}
     </div>

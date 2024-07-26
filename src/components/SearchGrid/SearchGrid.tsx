@@ -1,8 +1,27 @@
 import React from "react";
+import CardSearch from "../CardSearch/CardSearch";
+import { IUserSummary } from "../../api/users/types";
 import classes from "./SearchGrid.module.css";
 
-function SearchGrid() {
-  return <div className={classes.search_grid}>Search grid box</div>;
+interface SearchCardGridProps {
+  users: IUserSummary[];
 }
 
-export default SearchGrid;
+const SearchCardGrid: React.FC<SearchCardGridProps> = ({ users }) => {
+  return (
+    <div className={classes.search_grid}>
+      {users.map((user, index) => (
+        <CardSearch key={index} userId={index}>
+          <img
+            src={user.profileImageUrl}
+            alt={user.name}
+            className={classes.card_img}
+          />
+          <h4 className={classes.card_name}>{user.name}</h4>
+        </CardSearch>
+      ))}
+    </div>
+  );
+};
+
+export default SearchCardGrid;

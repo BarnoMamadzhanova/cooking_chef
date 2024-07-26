@@ -148,7 +148,13 @@ export const followUserAsync = createAsyncThunk(
 const userSlice = createSlice({
   name: "users",
   initialState,
-  reducers: {},
+  reducers: {
+    clearUsers: (state) => {
+      state.users = null;
+      state.status = "idle";
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProfile.pending, (state) => {
@@ -258,5 +264,8 @@ const userSlice = createSlice({
       });
   },
 });
+
+export const selectUsers = (state: { users: UserState }) => state.users.users;
+export const { clearUsers } = userSlice.actions;
 
 export default userSlice.reducer;

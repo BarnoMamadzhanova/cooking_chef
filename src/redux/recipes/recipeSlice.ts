@@ -119,7 +119,13 @@ export const saveRecipe = createAsyncThunk(
 const recipeSlice = createSlice({
   name: "recipes",
   initialState,
-  reducers: {},
+  reducers: {
+    clearRecipes: (state) => {
+      state.recipes = [];
+      state.error = null;
+      state.loading = false;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchRecipes.pending, (state) => {
       state.loading = true;
@@ -249,5 +255,6 @@ export const selectTotalElements = (state: RootState) =>
 export const selectTotalPages = (state: RootState) => state.recipes.totalPages;
 export const selectCurrentPage = (state: RootState) =>
   state.recipes.currentPage;
+export const { clearRecipes } = recipeSlice.actions;
 
 export default recipeSlice.reducer;
