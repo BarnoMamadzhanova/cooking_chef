@@ -39,7 +39,7 @@ const App: React.FC = () => {
           <Route path="/details/:recipeId" element={<ProtectedDetails />} />
           <Route path="/search" element={<ProtectedSearch />} />
           <Route path="/profile" element={<ProtectedProfile />} />
-          <Route path="/chef" element={<ProtectedChef />} />
+          <Route path="/chef/:userId" element={<ProtectedChef />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Route>
       </Routes>

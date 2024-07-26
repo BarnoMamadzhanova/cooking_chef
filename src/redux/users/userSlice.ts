@@ -266,6 +266,8 @@ const userSlice = createSlice({
 });
 
 export const selectUsers = (state: { users: UserState }) => state.users.users;
+export const selectUserProfile = (state: { users: UserState }) =>
+  state.users.profile;
 export const { clearUsers } = userSlice.actions;
 
 export default userSlice.reducer;

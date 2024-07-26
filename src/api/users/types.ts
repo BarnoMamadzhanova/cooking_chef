@@ -46,6 +46,7 @@ export interface IUserListResponse {
 }
 
 export interface IUserSummary {
+  id: number;
   name: string;
   profileImageUrl: string;
 }
