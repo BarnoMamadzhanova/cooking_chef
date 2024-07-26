@@ -12,10 +12,15 @@ export const fileToBase64 = (file: File): Promise<string> => {
   });
 };
 
+export const fileToBlob = (file: File) => {
+  return new Blob([JSON.stringify(file)], { type: "application/json" });
+};
+
 export const uploadImage = (
   imageData: IImageRequest
 ): Promise<AxiosResponse<IUploadedImage>> => {
-  return axiosInstance.post(Endpoints.IMAGE.UPLOAD, imageData, {
+  console.log(imageData.file);
+  return axiosInstance.post(Endpoints.IMAGE.UPLOAD, imageData.file, {
     headers: { "Content-Type": "application/json" },
   });
 };

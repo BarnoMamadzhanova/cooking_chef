@@ -16,7 +16,7 @@ import {
 import { IRecipeResponse } from "../../api/recipes/types";
 
 interface UserState {
-  profile: IUserProfile | null;
+  profile: IUserProfile | undefined;
   users: IUserListResponse | null;
   userRecipes: IRecipeResponse | null;
   savedRecipes: IRecipeResponse | null;
@@ -25,7 +25,7 @@ interface UserState {
 }
 
 const initialState: UserState = {
-  profile: null,
+  profile: undefined,
   users: null,
   userRecipes: null,
   savedRecipes: null,

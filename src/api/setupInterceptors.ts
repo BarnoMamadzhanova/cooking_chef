@@ -26,8 +26,8 @@ export const setupAxiosInterceptors = (
     }
 
     if (
-      config.url?.includes("v1/auth") ||
-      config.url?.includes("v1/images/upload")
+      config.url?.includes("v1/auth")
+      // config.url?.includes("v1/images/upload")
     ) {
       config.headers["Content-Type"] = "application/json";
     }

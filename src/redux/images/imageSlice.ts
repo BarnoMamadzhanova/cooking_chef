@@ -19,9 +19,12 @@ export const uploadImageAsync = createAsyncThunk(
   "images/upload",
   async (file: File, { rejectWithValue }) => {
     try {
-      const base64File = await fileToBase64(file);
+      // const fileBlob = fileToBlob(file);
+      const fileBase = await fileToBase64(file);
+      // const formData = new FormData();
+      // formData.append("file", fileBlob);
 
-      const imageData: IImageRequest = { file: base64File };
+      const imageData: IImageRequest = { file: fileBase };
 
       const response = await uploadImage(imageData);
       return response.data;

@@ -14,6 +14,7 @@ import classes from "./Profile.module.css";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useFormik } from "formik";
 import { updateSchema } from "../../schemas/updateSchema";
+import { number, string } from "yup";
 
 function Profile() {
   const dispatch = useAppDispatch();
@@ -29,11 +30,17 @@ function Profile() {
   const status = useAppSelector((state) => state.users.status);
   const profile = useAppSelector((state) => state.users.profile);
 
-  const formik = useFormik({
+  const formik = useFormik<{
+    name: string;
+    bio: string;
+    profileImageId: undefined | number;
+    profileImageUrl: string;
+  }>({
+    // enableReinitialize,
     initialValues: {
       name: profile?.name || "",
       bio: profile?.bio || "",
-      profileImageId: 0,
+      profileImageId: undefined,
       profileImageUrl: profile?.profileImageUrl || "",
     },
     validationSchema: updateSchema,
@@ -59,7 +66,7 @@ function Profile() {
       formik.setValues({
         name: profile.name,
         bio: profile.bio,
-        profileImageId: profile.profileImageId || 0,
+        profileImageId: profile.profileImageId || undefined,
         profileImageUrl: profile.profileImageUrl || "",
       });
     }
@@ -87,6 +94,7 @@ function Profile() {
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    console.log(file);
     if (
       file &&
       ["image/jpeg", "image/png", "image/svg+xml"].includes(file.type)

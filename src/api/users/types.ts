@@ -4,7 +4,7 @@ export interface IUserProfile {
   id: number;
   name: string;
   bio: string;
-  profileImageId: number;
+  profileImageId: number | undefined;
   profileImageUrl: string;
   recipeCount: number;
   followerCount: number;
@@ -53,5 +53,5 @@ export interface IUserSummary {
 export interface IUpdateUserProfile {
   name: string;
   bio: string;
-  profileImageId: number;
+  profileImageId: number | undefined;
 }
