@@ -22,6 +22,8 @@ import user from "./user.svg";
 import user_input from "./user_input.svg";
 import user_alt from "./user_alt.svg";
 import visible from "./visible.svg";
+import userDefault from "./userDefault.png";
+import imageDefault from "./imageDefault.png";
 
 export {
   logo,
@@ -48,4 +50,6 @@ export {
   user,
   user_alt,
   user_input,
+  userDefault,
+  imageDefault,
 };

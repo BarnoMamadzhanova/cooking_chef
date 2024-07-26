@@ -105,6 +105,11 @@
   border-radius: 42px;
 }
 
+.update_image_container img {
+  width: 48px;
+  height: 48px;
+}
+
 /* .update_image_container input[type="file"] {
   opacity: 0;
   position: absolute;

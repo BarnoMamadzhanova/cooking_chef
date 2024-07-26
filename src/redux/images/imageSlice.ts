@@ -1,16 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IUploadedImage, IImageRequest } from "../../api/images/types";
+import { IUploadedImage } from "../../api/images/types";
 import { uploadImage, deleteImage } from "../../api/images";
-import { fileToBase64 } from "../../api/images/uploadImage";
 
 interface ImageState {
-  images: IUploadedImage[];
+  image: IUploadedImage | null;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
 
 const initialState: ImageState = {
-  images: [],
+  image: null,
   status: "idle",
   error: null,
 };
@@ -19,14 +18,10 @@ export const uploadImageAsync = createAsyncThunk(
   "images/upload",
   async (file: File, { rejectWithValue }) => {
     try {
-      // const fileBlob = fileToBlob(file);
-      const fileBase = await fileToBase64(file);
-      // const formData = new FormData();
-      // formData.append("file", fileBlob);
+      const formData = new FormData();
+      formData.append("file", file);
 
-      const imageData: IImageRequest = { file: fileBase };
-
-      const response = await uploadImage(imageData);
+      const response = await uploadImage({ file: formData });
       return response.data;
     } catch (error: any) {
       if (error.response && error.response.data) {
@@ -57,7 +52,11 @@ export const deleteImageAsync = createAsyncThunk(
 const imageSlice = createSlice({
   name: "images",
   initialState,
-  reducers: {},
+  reducers: {
+    clearImage: (state) => {
+      state.image = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(uploadImageAsync.pending, (state) => {
@@ -65,7 +64,7 @@ const imageSlice = createSlice({
       })
       .addCase(uploadImageAsync.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.images.push(action.payload);
+        state.image = action.payload;
       })
       .addCase(uploadImageAsync.rejected, (state, action) => {
         state.status = "failed";
@@ -74,11 +73,9 @@ const imageSlice = createSlice({
       .addCase(deleteImageAsync.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(deleteImageAsync.fulfilled, (state, action) => {
+      .addCase(deleteImageAsync.fulfilled, (state) => {
         state.status = "succeeded";
-        state.images = state.images.filter(
-          (image) => image.id !== action.meta.arg
-        );
+        state.image = null;
       })
       .addCase(deleteImageAsync.rejected, (state, action) => {
         state.status = "failed";
@@ -86,5 +83,7 @@ const imageSlice = createSlice({
       });
   },
 });
+
+export const { clearImage } = imageSlice.actions;
 
 export default imageSlice.reducer;

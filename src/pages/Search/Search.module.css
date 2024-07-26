@@ -1,0 +1,60 @@
+.search {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.search_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.search_content h3 {
+  margin: 0;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.5rem;
+  line-height: 2.25rem;
+  color: #343434;
+}
+
+.search_tabs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 10px;
+  background: #fff6de;
+  border-radius: 100px;
+}
+
+.search_tabs span {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 48px;
+  gap: 10px;
+  color: #343434;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 28px;
+  transition: all 0.3s ease-in;
+}
+
+.search_tabs span:hover {
+  color: #fafafa;
+  background: #fa9e31;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.add_recipe {
+  margin-top: auto;
+}

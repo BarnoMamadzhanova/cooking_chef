@@ -5,11 +5,11 @@ import {
   fetchUserRecipes,
   updateUserProfile,
 } from "../../redux/users/userSlice";
-import { uploadImageAsync } from "../../redux/images/imageSlice";
+import { uploadImageAsync, clearImage } from "../../redux/images/imageSlice";
 import UserProfile from "../../components/ProfileInfo/ProfileInfo";
 import CardGrid from "../../components/CardGrid/CardGrid";
 import Modal from "../../components/Modal/Modal";
-import { close, camera } from "../../assests";
+import { close, camera, userDefault } from "../../assests";
 import classes from "./Profile.module.css";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useFormik } from "formik";
@@ -19,6 +19,7 @@ function Profile() {
   const dispatch = useAppDispatch();
   const [activeTab, setActiveTab] = useState<"my" | "saved">("my");
   const [isModalActive, setIsModalActive] = useState<boolean>(false);
+  const [previewImage, setPreviewImage] = useState(camera);
 
   const userRecipes = useAppSelector(
     (state) => state.users.userRecipes?.content || []
@@ -94,25 +95,28 @@ function Profile() {
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     console.log(file);
-    if (
-      file &&
-      ["image/jpeg", "image/png", "image/svg+xml"].includes(file.type)
-    ) {
-      try {
-        const formData = new FormData();
-        formData.append("file", file);
+    if (file) {
+      setPreviewImage(URL.createObjectURL(file));
 
-        const actionResult = await dispatch(uploadImageAsync(file));
-        const result = unwrapResult(actionResult);
-        if (result) {
-          formik.setFieldValue("profileImageId", result.id);
-          formik.setFieldValue("profileImageUrl", result.imageUrl);
+      if (["image/jpeg", "image/png", "image/svg+xml"].includes(file.type)) {
+        try {
+          const actionResult = await dispatch(uploadImageAsync(file));
+          const result = unwrapResult(actionResult);
+          if (result) {
+            formik.setFieldValue("profileImageId", result.id);
+            formik.setFieldValue("profileImageUrl", result.imageUrl);
+
+            dispatch(clearImage());
+            setPreviewImage(result.imageUrl);
+          }
+        } catch (error) {
+          console.error("Failed to upload image:", error);
         }
-      } catch (error) {
-        console.error("Failed to upload image:", error);
+      } else {
+        alert("Please select a valid image file (jpg, png, svg).");
       }
     } else {
-      alert("Please select a valid image file (jpg, png, svg).");
+      setPreviewImage(userDefault);
     }
   };
 
@@ -181,16 +185,17 @@ function Profile() {
             <label htmlFor="profile_photo" className={classes.update_label}>
               Add a profile photo:
               <div className={classes.update_image_container}>
-                {/* {formik.values.profileImageUrl && (
-                  <img src={formik.values.profileImageUrl} alt="Profile" />
-                )} */}
-                <img src={camera} alt="img" />
+                <img
+                  src={formik.values.profileImageUrl || previewImage}
+                  alt="img"
+                />
                 <input
                   type="file"
                   id="profile_photo"
                   name="profile_photo"
                   onChange={handleFileChange}
                   className={classes.update_input}
+                  accept="image/jpeg, image/png, image/svg+xml"
                 />
               </div>
             </label>

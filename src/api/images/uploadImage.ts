@@ -20,7 +20,11 @@ export const uploadImage = (
   imageData: IImageRequest
 ): Promise<AxiosResponse<IUploadedImage>> => {
   console.log(imageData.file);
-  return axiosInstance.post(Endpoints.IMAGE.UPLOAD, imageData.file, {
-    headers: { "Content-Type": "application/json" },
-  });
+  return axiosInstance.post(
+    Endpoints.IMAGE.UPLOAD,
+    imageData.file
+    //   {
+    //   headers: { "Content-Type": "application/json" },
+    // }
+  );
 };
