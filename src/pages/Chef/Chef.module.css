@@ -1,0 +1,131 @@
+.chef {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.author_info {
+  width: min(480px, 90vw);
+  display: block;
+  margin-inline: auto;
+}
+
+.author figure {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  align-content: center;
+  gap: 3rem;
+}
+
+.author__avatar {
+  aspect-ratio: 1;
+  border-radius: 10px;
+  max-width: 160px;
+  object-fit: cover;
+}
+
+.author__name {
+  font-weight: 500;
+  color: #343434;
+}
+
+.author__wrapper {
+  padding-inline: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.author__wrapper h2 {
+  margin-block: 0;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.stats > .stat {
+  display: grid;
+  grid-column: span 1;
+  grid-template-columns: subgrid;
+  justify-items: center;
+}
+
+.stat__number {
+  font-size: 1.5rem;
+  color: #343434;
+  font-weight: 500;
+}
+.stat__label {
+  font-size: 1rem;
+  color: #666;
+}
+
+.author .bio {
+  font-size: 1rem;
+  color: #666;
+  text-align: center;
+  margin-block: 1rem 2rem;
+}
+
+.bio p {
+  margin-block: 0;
+}
+
+.follow_btn {
+  margin-top: 1rem;
+  background-color: #fa9e31;
+  color: white;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding-block: 14px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.1rem;
+  transition: all 0.3s ease-in;
+  cursor: pointer;
+}
+
+.follow_btn:hover {
+  background-color: #fbbf75fe;
+}
+
+.following_btn {
+  margin-top: 1rem;
+  background: #fff6de;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding-block: 14px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.1rem;
+  color: #fa9e31;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease-in;
+}
+
+.following_btn:hover {
+  background: #fa9e31;
+  color: #ffffff;
+}

@@ -17,6 +17,7 @@ export interface IRecipe {
 }
 
 export interface IRecipeParams {
+  userId?: number;
   categoryId?: number;
   searchTerm?: string;
   page?: number;
