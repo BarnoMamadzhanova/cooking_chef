@@ -18,6 +18,7 @@ import {
   selectRecipes,
   clearRecipes,
   createRecipe,
+  selectRecipesError,
 } from "../../redux/recipes/recipeSlice";
 import {
   fetchUsers,
@@ -122,17 +123,9 @@ const Search: React.FC = () => {
         setSuccessModalOpen(true);
         setIsModalOpen(false);
       } catch (error) {
-        const typedError = error as Error;
-        if (typedError instanceof AxiosError) {
-          console.error("Failed to create recipe:", typedError.message);
-          setErrorMessage(typedError.message);
-        } else if (typedError instanceof Error) {
-          console.error("Failed to create recipe:", typedError.message);
-          setErrorMessage(typedError.message);
-        } else {
-          console.error("Failed to create recipe:", error);
-          setErrorMessage("An unexpected error occurred.");
-        }
+        const typedError = error as AxiosError;
+        setErrorMessage(typedError.message || "An unexpected error occurred.");
+        setIsModalOpen(false);
         setErrorModalOpen(true);
       }
     },
@@ -267,9 +260,9 @@ const Search: React.FC = () => {
                   className={classes.input}
                   placeholder="Recipe Name"
                 />
-                {/* {formik.errors.name && (
+                {formik.errors.name && (
                   <div className={classes.error}>{formik.errors.name}</div>
-                )} */}
+                )}
               </div>
 
               <div className={classes.input_group}>
@@ -283,6 +276,9 @@ const Search: React.FC = () => {
                   placeholder="Description"
                 />
               </div>
+              {formik.errors.description && (
+                <div className={classes.error}>{formik.errors.description}</div>
+              )}
 
               <div className={classes.input_group}>
                 <label>Ingredients</label>
@@ -381,6 +377,11 @@ const Search: React.FC = () => {
                   value={formik.values.preparationTime}
                 />
               </div>
+              {formik.errors.preparationTime && (
+                <div className={classes.error}>
+                  {formik.errors.preparationTime}
+                </div>
+              )}
 
               <div className={classes.modal_actions}>
                 <button type="submit" className={classes.save_button}>
@@ -395,7 +396,7 @@ const Search: React.FC = () => {
       {successModalOpen && (
         <Modal active={successModalOpen} setActive={setSuccessModalOpen}>
           <div className={classes.success_modal_content}>
-            <h2>You have successfully added a recipe</h2>
+            <h2>You have successfully created a recipe</h2>
             <button
               className={classes.success_button}
               onClick={() => {
@@ -412,8 +413,7 @@ const Search: React.FC = () => {
       {errorModalOpen && (
         <Modal active={errorModalOpen} setActive={setErrorModalOpen}>
           <div className={classes.error_modal_content}>
-            <h2>Error</h2>
-            <p>{errorMessage}</p>
+            <h2>{errorMessage}</h2>
             <button className={classes.error_button} onClick={closeErrorModal}>
               Ok
             </button>

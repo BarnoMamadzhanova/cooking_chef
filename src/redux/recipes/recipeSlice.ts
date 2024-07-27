@@ -79,7 +79,8 @@ export const createRecipe = createAsyncThunk(
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        return rejectWithValue(error.message);
+        const errorMessage = error.response?.data?.message || error.message;
+        return rejectWithValue(errorMessage);
       }
       return rejectWithValue("An unknown error occurred");
     }
