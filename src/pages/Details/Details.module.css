@@ -60,6 +60,12 @@
   line-height: 1.25rem;
 }
 
+.author_name:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
 .details_preparation,
 .icon_box,
 .info_box,

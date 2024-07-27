@@ -48,6 +48,10 @@ const Details: React.FC = () => {
     }
   };
 
+  const handleAuthorClick = (authorId: number) => {
+    navigate(`/chef/${authorId}`);
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -73,7 +77,12 @@ const Details: React.FC = () => {
       <div className={classes.details_box}>
         <div className={classes.details_title_box}>
           <h2>{recipeDetail.name}</h2>
-          <p>by {recipeDetail.author.name}</p>
+          <p
+            onClick={() => handleAuthorClick(recipeDetail.author.id)}
+            className={classes.author_name}
+          >
+            by {recipeDetail.author.name}
+          </p>
         </div>
         <div className={classes.details_preparation}>
           <div className={classes.details_time}>
