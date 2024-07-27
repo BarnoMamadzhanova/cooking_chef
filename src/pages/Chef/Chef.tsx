@@ -1,13 +1,16 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
-import { fetchUserById, selectUserProfile } from "../../redux/users/userSlice";
+import {
+  fetchUserById,
+  selectViewedProfile,
+} from "../../redux/users/userSlice";
 import classes from "./Chef.module.css";
 
 const Chef: React.FC = () => {
   const { userId } = useParams<{ userId: string }>();
   const dispatch = useAppDispatch();
-  const userProfile = useAppSelector(selectUserProfile);
+  const viewedProfile = useAppSelector(selectViewedProfile);
 
   useEffect(() => {
     if (userId) {
@@ -15,7 +18,7 @@ const Chef: React.FC = () => {
     }
   }, [userId, dispatch]);
 
-  if (!userProfile) {
+  if (!viewedProfile) {
     return <p>Loading...</p>;
   }
 
@@ -24,15 +27,15 @@ const Chef: React.FC = () => {
       <h3>Author's Page</h3>
       <div className={classes.profile}>
         <img
-          src={userProfile.profileImageUrl}
-          alt={userProfile.name}
+          src={viewedProfile.profileImageUrl}
+          alt={viewedProfile.name}
           className={classes.profile_img}
         />
-        <h4>{userProfile.name}</h4>
-        <p>{userProfile.bio}</p>
-        <p>Recipes: {userProfile.recipeCount}</p>
-        <p>Followers: {userProfile.followerCount}</p>
-        <p>Following: {userProfile.followingCount}</p>
+        <h4>{viewedProfile.name}</h4>
+        <p>{viewedProfile.bio}</p>
+        <p>Recipes: {viewedProfile.recipeCount}</p>
+        <p>Followers: {viewedProfile.followerCount}</p>
+        <p>Following: {viewedProfile.followingCount}</p>
       </div>
     </div>
   );

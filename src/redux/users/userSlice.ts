@@ -18,6 +18,7 @@ import { IRecipeResponse } from "../../api/recipes/types";
 
 interface UserState {
   profile: IUserProfile | undefined;
+  viewedProfile: IUserProfile | undefined;
   users: IUserListResponse | null;
   userRecipes: IRecipeResponse | null;
   savedRecipes: IRecipeResponse | null;
@@ -27,6 +28,7 @@ interface UserState {
 
 const initialState: UserState = {
   profile: undefined,
+  viewedProfile: undefined,
   users: null,
   userRecipes: null,
   savedRecipes: null,
@@ -212,6 +214,7 @@ const userSlice = createSlice({
         fetchUserById.fulfilled,
         (state, action: PayloadAction<IUserProfile>) => {
           state.status = "succeeded";
+          state.viewedProfile = action.payload;
         }
       )
       .addCase(fetchUserById.rejected, (state, action) => {
@@ -268,6 +271,8 @@ const userSlice = createSlice({
 export const selectUsers = (state: { users: UserState }) => state.users.users;
 export const selectUserProfile = (state: { users: UserState }) =>
   state.users.profile;
+export const selectViewedProfile = (state: { users: UserState }) =>
+  state.users.viewedProfile;
 export const { clearUsers } = userSlice.actions;
 
 export default userSlice.reducer;

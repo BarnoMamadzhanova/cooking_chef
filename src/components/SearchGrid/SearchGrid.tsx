@@ -10,7 +10,7 @@ interface SearchCardGridProps {
 const SearchCardGrid: React.FC<SearchCardGridProps> = ({ users }) => {
   return (
     <div className={classes.search_grid}>
-      {users.map((user, index) => (
+      {users.map((user) => (
         <CardSearch key={user.id} userId={user.id}>
           <img
             src={user.profileImageUrl}
