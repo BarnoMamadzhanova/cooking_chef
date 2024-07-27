@@ -30,11 +30,8 @@ function Home() {
   const currentPage = useAppSelector(selectCurrentPage);
   const profile = useAppSelector((state) => state.users.profile);
 
-  const defaultCategory = categories.find(
-    (category) => category.name.toLowerCase() === "breakfast"
-  );
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
-    defaultCategory ? defaultCategory.id : null
+    null
   );
 
   useEffect(() => {
@@ -74,6 +71,7 @@ function Home() {
         <div className={classes.display_box}>
           <Categories
             categories={categories}
+            selectedCategoryId={selectedCategoryId}
             onCategoryClick={handleCategoryClick}
           />
           {loading && <div>Loading...</div>}

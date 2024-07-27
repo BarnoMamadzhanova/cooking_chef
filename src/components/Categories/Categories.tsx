@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import classes from "./Categories.module.css";
 
 interface Category {
@@ -8,28 +8,27 @@ interface Category {
 
 interface Props {
   categories: Category[];
+  selectedCategoryId: number | null;
   onCategoryClick: (categoryId: number) => void;
 }
 
-const Categories: React.FC<Props> = ({ categories, onCategoryClick }) => {
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
-    null
-  );
-
+const Categories: React.FC<Props> = ({
+  categories,
+  selectedCategoryId,
+  onCategoryClick,
+}) => {
   useEffect(() => {
-    const defaultCategory = categories.find(
-      (category) => category.name.toLowerCase() === "breakfast"
-    );
-    if (defaultCategory) {
-      setSelectedCategoryId(defaultCategory.id);
-      onCategoryClick(defaultCategory.id);
+    if (!selectedCategoryId && categories.length > 0) {
+      const defaultCategory = categories.find(
+        (category) => category.name.toLowerCase() === "breakfast"
+      );
+      if (defaultCategory) {
+        onCategoryClick(defaultCategory.id);
+      } else {
+        onCategoryClick(categories[0].id);
+      }
     }
-  }, [categories, onCategoryClick]);
-
-  const handleCategoryClick = (categoryId: number) => {
-    setSelectedCategoryId(categoryId);
-    onCategoryClick(categoryId);
-  };
+  }, [categories, selectedCategoryId, onCategoryClick]);
 
   return (
     <ul className={classes.list}>
@@ -39,7 +38,7 @@ const Categories: React.FC<Props> = ({ categories, onCategoryClick }) => {
           className={`${classes.link} ${
             selectedCategoryId === category.id ? classes.active : ""
           }`}
-          onClick={() => handleCategoryClick(category.id)}
+          onClick={() => onCategoryClick(category.id)}
         >
           {category.name}
         </li>

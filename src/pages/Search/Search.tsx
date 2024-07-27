@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { recipeSchema } from "../../schemas/recipeSchema";
 import classes from "./Search.module.css";
@@ -24,7 +25,7 @@ import {
   clearUsers,
 } from "../../redux/users/userSlice";
 import {
-  createCategory,
+  fetchCategories,
   selectCategories,
 } from "../../redux/categories/categorySlice";
 import useDebounce from "../../components/Hook/useDebounce";
@@ -32,30 +33,35 @@ import CardGrid from "../../components/CardGrid/CardGrid";
 import SearchCardGrid from "../../components/SearchGrid/SearchGrid";
 import { uploadImageAsync, clearImage } from "../../redux/images/imageSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
+import { AxiosError } from "axios";
 
 const Search: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"Recipes" | "Chefs">("Recipes");
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState(camera);
-  const [newCategoryName, setNewCategoryName] = useState("");
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [redirectToProfile, setRedirectToProfile] = useState(false);
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const recipes = useAppSelector(selectRecipes);
   const users = useAppSelector(selectUsers);
   const categories = useAppSelector(selectCategories);
 
   useEffect(() => {
-    if (activeTab === "Recipes") {
-      dispatch(clearUsers());
-    } else {
-      dispatch(clearRecipes());
-    }
+    dispatch(clearRecipes());
+  }, [dispatch]);
 
+  useEffect(() => {
     if (debouncedSearchTerm) {
       if (activeTab === "Recipes") {
+        dispatch(clearUsers());
         dispatch(fetchRecipes({ searchTerm: debouncedSearchTerm }));
       } else {
+        dispatch(clearRecipes());
         dispatch(fetchUsers({ searchTerm: debouncedSearchTerm }));
       }
     }
@@ -86,8 +92,12 @@ const Search: React.FC = () => {
     }
   };
 
-  const openModal = () => setIsModalOpen(true);
+  const openModal = () => {
+    setIsModalOpen(true);
+    dispatch(fetchCategories());
+  };
   const closeModal = () => setIsModalOpen(false);
+  const closeErrorModal = () => setErrorModalOpen(false);
 
   const recipeList = recipes;
   const userList = users ? users.content : [];
@@ -103,15 +113,28 @@ const Search: React.FC = () => {
       ingredients: [{ name: "", quantity: 0, measure: "TEASPOON" }],
     },
     validationSchema: recipeSchema,
-    onSubmit: (values) => {
-      dispatch(createRecipe(values))
-        .unwrap()
-        .then(() => {
-          closeModal();
-        })
-        .catch((error) => {
+    onSubmit: async (values) => {
+      try {
+        if (values.imageId === 0) {
+          values.imageId = 0;
+        }
+        await dispatch(createRecipe(values)).unwrap();
+        setSuccessModalOpen(true);
+        setIsModalOpen(false);
+      } catch (error) {
+        const typedError = error as Error;
+        if (typedError instanceof AxiosError) {
+          console.error("Failed to create recipe:", typedError.message);
+          setErrorMessage(typedError.message);
+        } else if (typedError instanceof Error) {
+          console.error("Failed to create recipe:", typedError.message);
+          setErrorMessage(typedError.message);
+        } else {
           console.error("Failed to create recipe:", error);
-        });
+          setErrorMessage("An unexpected error occurred.");
+        }
+        setErrorModalOpen(true);
+      }
     },
   });
 
@@ -140,19 +163,11 @@ const Search: React.FC = () => {
     }
   };
 
-  const handleAddCategory = async () => {
-    if (newCategoryName.trim()) {
-      try {
-        const actionResult = await dispatch(
-          createCategory({ name: newCategoryName })
-        );
-        unwrapResult(actionResult);
-        setNewCategoryName("");
-      } catch (error) {
-        console.error("Failed to add category:", error);
-      }
+  useEffect(() => {
+    if (redirectToProfile) {
+      navigate("/profile");
     }
-  };
+  }, [redirectToProfile, navigate]);
 
   return (
     <div className={classes.search}>
@@ -267,11 +282,6 @@ const Search: React.FC = () => {
                   className={classes.input}
                   placeholder="Description"
                 />
-                {/* {formik.errors.description && (
-                  <div className={classes.error}>
-                    {formik.errors.description}
-                  </div>
-                )} */}
               </div>
 
               <div className={classes.input_group}>
@@ -362,24 +372,6 @@ const Search: React.FC = () => {
               </div>
 
               <div className={classes.input_group}>
-                <label htmlFor="newCategory">Add New Category:</label>
-                <input
-                  id="newCategory"
-                  name="newCategory"
-                  type="text"
-                  value={newCategoryName}
-                  onChange={(e) => setNewCategoryName(e.target.value)}
-                />
-                <button
-                  type="button"
-                  onClick={handleAddCategory}
-                  disabled={!newCategoryName.trim()}
-                >
-                  <img src={add_recipe} alt="plus" />
-                </button>
-              </div>
-
-              <div className={classes.input_group}>
                 <label htmlFor="preparationTime">Preparation Time:</label>
                 <input
                   id="preparationTime"
@@ -388,23 +380,43 @@ const Search: React.FC = () => {
                   onChange={formik.handleChange}
                   value={formik.values.preparationTime}
                 />
-                {/* {formik.errors.preparationTime && (
-                  <div className={classes.error}>
-                    {formik.errors.preparationTime}
-                  </div>
-                )} */}
               </div>
 
               <div className={classes.modal_actions}>
-                <button
-                  type="submit"
-                  className={classes.save_button}
-                  onClick={closeModal}
-                >
+                <button type="submit" className={classes.save_button}>
                   Save Recipe
                 </button>
               </div>
             </form>
+          </div>
+        </Modal>
+      )}
+
+      {successModalOpen && (
+        <Modal active={successModalOpen} setActive={setSuccessModalOpen}>
+          <div className={classes.success_modal_content}>
+            <h2>You have successfully added a recipe</h2>
+            <button
+              className={classes.success_button}
+              onClick={() => {
+                setSuccessModalOpen(false);
+                setRedirectToProfile(true);
+              }}
+            >
+              Great!
+            </button>
+          </div>
+        </Modal>
+      )}
+
+      {errorModalOpen && (
+        <Modal active={errorModalOpen} setActive={setErrorModalOpen}>
+          <div className={classes.error_modal_content}>
+            <h2>Error</h2>
+            <p>{errorMessage}</p>
+            <button className={classes.error_button} onClick={closeErrorModal}>
+              Ok
+            </button>
           </div>
         </Modal>
       )}
