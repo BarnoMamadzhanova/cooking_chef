@@ -118,3 +118,78 @@
 .add_recipe button:hover {
   background-color: #fbbf75fe;
 }
+
+.modal_content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 480px;
+}
+
+.modal_header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal_header h2 {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.5rem;
+  line-height: 2.25rem;
+  color: #343434;
+}
+
+.modal_header img:hover {
+  cursor: pointer;
+}
+
+.input_group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 21px;
+  color: #666666;
+}
+
+/* .input_group textarea {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 21px;
+  color: #666666;
+} */
+
+.image_container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: #ededed;
+  border-radius: 42px;
+  width: 90%;
+  border: none;
+  padding: 0.625rem 1.25rem;
+  gap: 0.625rem;
+}
+
+.image_container img {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+}
+
+.input {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0.625rem 1.25rem;
+  background: #ededed;
+  border-radius: 42px;
+  width: 90%;
+  border: none;
+}

@@ -36,7 +36,6 @@ function Profile() {
     profileImageId: undefined | number;
     profileImageUrl: string;
   }>({
-    // enableReinitialize,
     initialValues: {
       name: profile?.name || "",
       bio: profile?.bio || "",
@@ -169,6 +168,7 @@ function Profile() {
               />
               {formik.errors.name && <div>{formik.errors.name}</div>}
             </label>
+
             <label htmlFor="bio" className={classes.update_label}>
               Change your bio
               <textarea
@@ -180,6 +180,7 @@ function Profile() {
               ></textarea>
               {formik.errors.bio && <div>{formik.errors.bio}</div>}
             </label>
+
             <label htmlFor="profile_photo" className={classes.update_label}>
               Add a profile photo:
               <div className={classes.update_image_container}>
@@ -197,6 +198,7 @@ function Profile() {
                 />
               </div>
             </label>
+
             <button type="submit" className={classes.update_btn}>
               Save changes
             </button>
