@@ -4,13 +4,18 @@
   background-color: rgba(0, 0, 0, 0.3);
   position: fixed;
   top: 0;
-  left: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   pointer-events: none;
   transition: 0.5s;
+  gap: 6rem;
+
+  width: calc(100% - 6rem);
+  right: 0;
+  left: unset;
 }
 
 .modal.active {
@@ -22,11 +27,12 @@
   padding: 2rem;
   border-radius: 1.75rem;
   background-color: white;
-  width: 34;
+  width: 34rem;
   transform: scale(0.5);
   transition: 0.4s all;
   max-height: 100vh;
   overflow-y: scroll;
+  margin-inline: auto;
 }
 
 .modal__content.active {
@@ -44,7 +50,7 @@
 /* Media query for max-width 500px */
 @media (max-width: 500px) {
   .modal__content {
-    padding: 2rem;
-    width: 24rem;
+    padding: 1rem;
+    width: 100%;
   }
 }

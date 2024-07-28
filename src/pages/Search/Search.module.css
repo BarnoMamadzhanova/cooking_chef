@@ -130,7 +130,10 @@
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  width: 480px;
+  width: 540px;
+}
+.modal_content :is(input, textarea, select, button) {
+  font-family: inherit;
 }
 
 .modal_header {
@@ -178,7 +181,7 @@
 
 .image_container img {
   width: 80px;
-  height: 80px;
+  aspect-ratio: 1;
   border-radius: 16px;
 }
 
@@ -266,7 +269,8 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  gap: 2rem;
+  flex-wrap: wrap;
+  column-gap: 2rem;
 }
 
 .error {
@@ -349,8 +353,48 @@
 
   .ingredient_input_group {
     gap: 10px;
-    /* display: flex;
+    display: flex;
     flex-direction: column;
-    align-items: flex-start; */
+    align-items: flex-start;
+  }
+}
+
+/* Media query for max-width 700px */
+@media (max-width: 700px) {
+  .add_recipe button {
+    padding: 0.625rem 6rem;
+  }
+}
+
+/* Media query for max-width 600px */
+@media (max-width: 600px) {
+  .modal_content {
+    gap: 1rem;
+    width: 350px;
+  }
+}
+
+@media (max-width: 500px) {
+  .modal_content {
+    width: 100%;
+  }
+  .combined_inputs {
+    flex-direction: column;
+    align-items: flex-start;
+    row-gap: 6px;
+  }
+
+  .combined_inputs > div,
+  .combined_inputs select {
+    width: 100%;
+  }
+
+  .image_container img {
+    width: 48px;
+    border-radius: 8px;
+  }
+
+  .search_tabs span {
+    padding-inline: 36px;
   }
 }

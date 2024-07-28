@@ -125,14 +125,6 @@ textarea.update_input {
   border-radius: 6px;
 }
 
-/* .update_image_container input[type="file"] {
-  opacity: 0;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-} */
-
 .update_btn {
   font-size: 1rem;
   font-weight: 500;
@@ -170,5 +162,14 @@ textarea.update_input {
     align-items: center;
     justify-content: space-between;
     gap: 3rem;
+  }
+}
+
+/* Media query for max-width 600px */
+@media (max-width: 600px) {
+  .update_image_container .update_input {
+    padding-inline: 1rem;
+    gap: 0.5rem;
+    width: 16rem;
   }
 }

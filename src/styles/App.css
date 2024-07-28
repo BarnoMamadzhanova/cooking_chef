@@ -2,10 +2,6 @@
   --font-family-poppins: "poppins", sans-serif;
 }
 
-/* .App {
-  text-align: center;
-} */
-
 html {
   font-size: 16px;
 }
@@ -26,4 +22,18 @@ html {
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-style: normal;
+}
+
+/* Media query for max-width 800px */
+@media (max-width: 800px) {
+  html {
+    font-size: 14px !important;
+  }
+}
+
+/* Media query for max-width 600px */
+@media (max-width: 600px) {
+  html {
+    font-size: 12px !important;
+  }
 }
