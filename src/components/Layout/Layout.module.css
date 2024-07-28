@@ -1,3 +1,11 @@
-.mainContent {
+/* .mainContent {
   padding-left: 6rem;
+} */
+
+.authenticatedContent {
+  padding-left: 6rem;
+}
+
+.unauthenticatedContent {
+  padding-left: 0;
 }

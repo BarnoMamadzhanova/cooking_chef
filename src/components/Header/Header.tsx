@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { logoutUser } from "../../redux/auth/authSlice";
-import { useAppDispatch } from "../../redux/hook";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import Modal from "../Modal/Modal";
 import classes from "./Header.module.css";
 import {
@@ -15,6 +15,7 @@ import {
   user_alt,
   logout as logoutIcon,
 } from "../../assests/index";
+import { RootState } from "../../redux/store";
 
 type ActiveLinkProps = {
   isActive: boolean;
@@ -27,6 +28,7 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [modalActive, setModalActive] = useState(false);
+  const isAuth = useAppSelector((state: RootState) => !!state.auth.accessToken);
 
   const handleLogout = async () => {
     try {
@@ -41,6 +43,14 @@ const Header = () => {
     setModalActive(true);
   };
 
+  const handleLogoClick = () => {
+    if (isAuth) {
+      navigate("/home");
+    } else {
+      navigate("/login");
+    }
+  };
+
   const renderImage = (
     isActive: boolean,
     normalImg: string,
@@ -48,11 +58,15 @@ const Header = () => {
     altText: string
   ) => <img src={isActive ? normalImg : altImg} alt={altText} />;
 
+  if (!isAuth) {
+    return null;
+  }
+
   return (
     <header className={classes.header}>
       <div className={classes.header_wrapper}>
         <div className={classes.sidebar}>
-          <div className={classes.first_link} onClick={() => navigate("/")}>
+          <div className={classes.first_link} onClick={handleLogoClick}>
             {renderImage(true, logo, logo_alt, "CooksCorner")}
           </div>
           <div className={classes.links}>

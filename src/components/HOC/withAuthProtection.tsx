@@ -14,7 +14,7 @@ const withAuthProtection = (Component: ComponentType<Props>) => {
     );
 
     if (!isLoggedIn) {
-      return <Navigate to="/login" />;
+      return <Navigate to="/" replace />;
     }
 
     return <Component {...props} />;

@@ -23,7 +23,7 @@ const ProtectedDetails = withAuthProtection(Details);
 const ProtectedSearch = withAuthProtection(Search);
 
 const App: React.FC = () => {
-  const { isLoading } = useAppSelector(selectAuthState);
+  const { isLoading, isAuth } = useAppSelector(selectAuthState);
 
   if (isLoading) {
     return <Splash />;
@@ -33,14 +33,22 @@ const App: React.FC = () => {
     <div className="App">
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Login />} />
-          <Route path="/registration" element={<Registration />} />
-          <Route path="/home" element={<ProtectedHome />} />
-          <Route path="/details/:recipeId" element={<ProtectedDetails />} />
-          <Route path="/search" element={<ProtectedSearch />} />
-          <Route path="/profile" element={<ProtectedProfile />} />
-          <Route path="/chef/:userId" element={<ProtectedChef />} />
-          <Route path="*" element={<Navigate to="/" />} />
+          {!isAuth ? (
+            <>
+              <Route index element={<Login />} />
+              <Route path="/registration" element={<Registration />} />
+              <Route path="*" element={<Navigate to="/" />} />
+            </>
+          ) : (
+            <>
+              <Route path="/home" element={<ProtectedHome />} />
+              <Route path="/details/:recipeId" element={<ProtectedDetails />} />
+              <Route path="/search" element={<ProtectedSearch />} />
+              <Route path="/profile" element={<ProtectedProfile />} />
+              <Route path="/chef/:userId" element={<ProtectedChef />} />
+              <Route path="*" element={<Navigate to="/home" />} />
+            </>
+          )}
         </Route>
       </Routes>
     </div>
