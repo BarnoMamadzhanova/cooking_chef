@@ -130,3 +130,41 @@
   background: #fa9e31;
   color: #ffffff;
 }
+
+/* Media query for max-width 1100px */
+@media (max-width: 1100px) {
+  .chef {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Media query for max-width 800px */
+@media (max-width: 800px) {
+  .author_info {
+    width: min(380px, 90vw);
+  }
+
+  .author__wrapper {
+    padding-inline: 2rem;
+  }
+
+  .follow_btn {
+    width: 70%;
+    margin-inline: auto;
+  }
+
+  .following_btn {
+    width: 70%;
+    margin-inline: auto;
+  }
+}
+
+/* Media query for max-width 600px */
+@media (max-width: 600px) {
+  .author_info {
+    width: min(300px, 90vw);
+  }
+}
