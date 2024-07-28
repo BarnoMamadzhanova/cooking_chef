@@ -6,6 +6,18 @@
   padding: 2rem;
 }
 
+.backLink {
+  position: absolute;
+  top: 6rem;
+  left: 12rem;
+  background: none;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  z-index: 1;
+  transition: background-color 0.3s ease;
+}
+
 .author_info {
   width: min(480px, 90vw);
   display: block;

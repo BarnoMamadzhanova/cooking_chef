@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import {
   fetchUserById,
@@ -9,10 +10,12 @@ import {
 import { fetchRecipes, selectRecipes } from "../../redux/recipes/recipeSlice";
 import CardGrid from "../../components/CardGrid/CardGrid";
 import classes from "./Chef.module.css";
+import { back_alt } from "../../assests";
 
 const Chef: React.FC = () => {
   const { userId } = useParams<{ userId: string }>();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const viewedProfile = useAppSelector(selectViewedProfile);
   const userRecipes = useAppSelector(selectRecipes);
   const [isFollowed, setIsFollowed] = useState(false);
@@ -44,6 +47,9 @@ const Chef: React.FC = () => {
 
   return (
     <div className={classes.chef}>
+      <button onClick={() => navigate(-1)} className={classes.backLink}>
+        <img src={back_alt} alt="back" />
+      </button>
       <div className={classes.author_info}>
         <div className={classes.author__wrapper}>
           <figure>
