@@ -69,6 +69,7 @@ const Details: React.FC = () => {
       <button onClick={() => navigate(-1)} className={classes.backLink}>
         <img src={back} alt="back" />
       </button>
+      <div className={classes.bg_gradient}></div>
       <img
         src={recipeDetail.imageUrl}
         alt={recipeDetail.name}
@@ -115,7 +116,7 @@ const Details: React.FC = () => {
         </div>
         <div className={classes.ingredients_box}>
           <h4>Ingredients</h4>
-          <ul>
+          <ul className={classes.ingredients_list}>
             {recipeDetail.ingredients.map((ingredient, index) => (
               <li key={index}>
                 <span>{ingredient.name}</span>

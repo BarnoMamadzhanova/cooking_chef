@@ -31,6 +31,7 @@
 .author__name {
   font-weight: 500;
   color: #343434;
+  text-align: center;
 }
 
 .author__wrapper {

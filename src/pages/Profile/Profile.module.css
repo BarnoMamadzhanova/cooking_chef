@@ -41,7 +41,8 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  padding: 2rem;
+  padding: 0;
+  margin-bottom: 2rem;
 }
 
 .update_title {
@@ -52,12 +53,18 @@
 }
 
 .update_title h3 {
+  margin-inline: auto;
+  text-align: center;
   color: #343434;
   font-style: normal;
   font-weight: 500;
   font-size: 1.5rem;
   line-height: 2.25rem;
   margin-block: 0;
+}
+
+.update_title img {
+  cursor: pointer;
 }
 
 .update_form {
@@ -76,6 +83,7 @@
   font-size: 14px;
   line-height: 21px;
   color: #666666;
+  width: 100%;
 }
 
 .update_input {
@@ -86,8 +94,12 @@
   gap: 0.625rem;
   background: #ededed;
   border-radius: 42px;
-  width: 100%;
-  border: none;
+  font-family: inherit;
+  border: 1px solid #ededed;
+}
+
+textarea.update_input {
+  border-radius: 20px;
 }
 
 .update_input:focus {
@@ -103,12 +115,14 @@
   padding: 0.625rem 1.25rem;
   gap: 0.625rem;
   background: #ededed;
-  border-radius: 42px;
+  border-radius: 20px;
 }
 
 .update_image_container img {
   width: 48px;
-  height: 48px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 6px;
 }
 
 /* .update_image_container input[type="file"] {
@@ -135,6 +149,7 @@
   padding: 0.625rem 8rem;
   gap: 0.625rem;
   border-radius: 2.5rem;
+  width: 100%;
 }
 
 .update_btn:hover {
