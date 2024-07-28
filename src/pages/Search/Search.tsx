@@ -40,10 +40,11 @@ const Search: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState(camera);
-  const [successModalOpen, setSuccessModalOpen] = useState(false);
-  const [redirectToProfile, setRedirectToProfile] = useState(false);
-  const [errorModalOpen, setErrorModalOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  // const [successModalOpen, setSuccessModalOpen] = useState(false);
+  // const [redirectToProfile, setRedirectToProfile] = useState(false);
+  // const [errorModalOpen, setErrorModalOpen] = useState(false);
+  // const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
@@ -97,7 +98,7 @@ const Search: React.FC = () => {
     dispatch(fetchCategories());
   };
   const closeModal = () => setIsModalOpen(false);
-  const closeErrorModal = () => setErrorModalOpen(false);
+  // const closeErrorModal = () => setErrorModalOpen(false);
 
   const recipeList = recipes;
   const userList = users ? users.content : [];
@@ -115,17 +116,37 @@ const Search: React.FC = () => {
     validationSchema: recipeSchema,
     onSubmit: async (values) => {
       try {
+        setIsLoading(true);
         if (values.imageId === 0) {
           values.imageId = 0;
         }
-        await dispatch(createRecipe(values)).unwrap();
-        setSuccessModalOpen(true);
-        setIsModalOpen(false);
+        const resultAction = await dispatch(createRecipe(values));
+        const result = unwrapResult(resultAction);
+
+        if (result && result.id) {
+          setTimeout(() => {
+            closeModal();
+            navigate("/profile");
+          }, 1000); // Set a delay of 1 second before closing the modal and navigating to profile
+        }
+
+        // closeModal();
+        // if (result && result.id) {
+        //   navigate("/profile");
+        // } else {
+        //   console.error("Failed to create recipe: No result returned");
+        // }
+        // await dispatch(createRecipe(values)).unwrap();
+        // setSuccessModalOpen(true);
+        // setIsModalOpen(false);
+        // navigate("/profile");
       } catch (error) {
         const typedError = error as AxiosError;
-        setErrorMessage(typedError.message || "An unexpected error occurred.");
-        setIsModalOpen(false);
-        setErrorModalOpen(true);
+        console.error("Failed to create recipe:", typedError.message);
+        setIsLoading(false);
+        // setErrorMessage(typedError.message || "An unexpected error occurred.");
+        // setIsModalOpen(false);
+        // setErrorModalOpen(true);
       }
     },
   });
@@ -155,11 +176,11 @@ const Search: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    if (redirectToProfile) {
-      navigate("/profile");
-    }
-  }, [redirectToProfile, navigate]);
+  // useEffect(() => {
+  //   if (redirectToProfile) {
+  //     navigate("/profile");
+  //   }
+  // }, [redirectToProfile, navigate]);
 
   return (
     <div className={classes.search}>
@@ -394,8 +415,12 @@ const Search: React.FC = () => {
               )}
 
               <div className={classes.modal_actions}>
-                <button type="submit" className={classes.save_button}>
-                  Save Recipe
+                <button
+                  type="submit"
+                  className={classes.save_button}
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Saving..." : "Save Recipe"}
                 </button>
               </div>
             </form>
@@ -403,7 +428,7 @@ const Search: React.FC = () => {
         </Modal>
       )}
 
-      {successModalOpen && (
+      {/* {successModalOpen && (
         <Modal active={successModalOpen} setActive={setSuccessModalOpen}>
           <div className={classes.success_modal_content}>
             <h2>You have successfully created a recipe</h2>
@@ -418,9 +443,9 @@ const Search: React.FC = () => {
             </button>
           </div>
         </Modal>
-      )}
+      )} */}
 
-      {errorModalOpen && (
+      {/* {errorModalOpen && (
         <Modal active={errorModalOpen} setActive={setErrorModalOpen}>
           <div className={classes.error_modal_content}>
             <h2>{errorMessage}</h2>
@@ -429,7 +454,7 @@ const Search: React.FC = () => {
             </button>
           </div>
         </Modal>
-      )}
+      )} */}
     </div>
   );
 };
