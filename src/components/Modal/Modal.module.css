@@ -31,8 +31,8 @@
   transform: scale(1);
 }
 
-/* Media query for max-width 640px */
-@media (max-width: 640px) {
+/* Media query for max-width 800px */
+@media (max-width: 800px) {
   .modal__content {
     padding: 2rem;
     width: 30rem;

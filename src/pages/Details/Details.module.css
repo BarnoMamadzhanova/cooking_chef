@@ -10,7 +10,7 @@
   left: 2.5rem;
   background: none;
   border: 1px solid white;
-  border-radius: 100%;
+  border-radius: 1rem;
   cursor: pointer;
   z-index: 1;
   transition: background-color 0.3s ease;
@@ -33,6 +33,7 @@
   flex-direction: column;
   margin: 1.25rem 10rem;
   gap: 1.25rem;
+  width: 100%;
 }
 
 .details_title_box {
@@ -133,8 +134,12 @@
 }
 
 .icons img {
+  width: 24px;
+  aspect-ratio: 1;
   cursor: pointer;
   transition: filter 0.3s ease;
+  background: #fa9e31;
+  /* border-radius: 10px; */
 }
 
 .icons img.liked {
@@ -177,6 +182,7 @@
   align-items: flex-start;
   gap: 1rem;
   color: #343434;
+  width: 100%;
 }
 
 .ingredients_box h4 {
@@ -203,9 +209,8 @@
 .ingredients_box li {
   display: flex;
   justify-content: space-between;
-  width: 100%;
   padding: 0.5rem 0;
-  gap: 30rem;
+  /* gap: 30rem; */
 }
 
 .ingredients_box li span:first-child {
@@ -223,4 +228,32 @@
   font-size: 1rem;
   line-height: 1.5rem;
   align-self: flex-end;
+}
+
+/* Media query for max-width 1200px */
+@media (max-width: 1200px) {
+  .details_box {
+    margin: 1.25rem 8rem;
+  }
+}
+
+/* Media query for max-width 1000px */
+@media (max-width: 1000px) {
+  .details_box {
+    margin: 1.25rem 6rem;
+  }
+}
+
+/* Media query for max-width 800px */
+@media (max-width: 800px) {
+  .details_box {
+    margin: 1.25rem 4rem;
+  }
+}
+
+/* Media query for max-width 600px */
+@media (max-width: 600px) {
+  .details_box {
+    margin: 1.25rem 2rem;
+  }
 }

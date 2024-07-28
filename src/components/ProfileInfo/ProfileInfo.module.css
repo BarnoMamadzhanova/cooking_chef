@@ -8,7 +8,9 @@
 
 .profile_container img {
   width: 200px;
-  height: 200px;
+  aspect-ratio: 1;
+  border-radius: 900px;
+  object-fit: cover;
 }
 
 .info_box {
@@ -102,4 +104,14 @@
 .profile_btn:hover {
   background: #fa9e31;
   color: #ffffff;
+}
+
+/* Media query for max-width 800px */
+@media (max-width: 800px) {
+  .profile_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
 }

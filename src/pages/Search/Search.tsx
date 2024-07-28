@@ -18,7 +18,6 @@ import {
   selectRecipes,
   clearRecipes,
   createRecipe,
-  selectRecipesError,
 } from "../../redux/recipes/recipeSlice";
 import {
   fetchUsers,
@@ -193,29 +192,33 @@ const Search: React.FC = () => {
             </label>
           </div>
         </form>
-      </div>
+        {activeTab === "Recipes" && recipes.length === 0 && (
+          <p>No recipes found</p>
+        )}
 
-      {activeTab === "Recipes" && recipes.length === 0 && (
-        <p>No recipes found</p>
-      )}
+        {activeTab === "Chefs" && userList.length === 0 && (
+          <p>No chefs found</p>
+        )}
 
-      {activeTab === "Chefs" && userList.length === 0 && <p>No chefs found</p>}
+        {activeTab === "Recipes" && <CardGrid recipes={recipeList} />}
 
-      {activeTab === "Recipes" && <CardGrid recipes={recipeList} />}
+        {activeTab === "Chefs" && <SearchCardGrid users={userList} />}
 
-      {activeTab === "Chefs" && <SearchCardGrid users={userList} />}
-
-      <div className={classes.add_recipe}>
-        <button onClick={openModal}>
-          <img src={plus} alt="add" />
-          Add your recipe
-        </button>
+        <div className={classes.add_recipe}>
+          <button onClick={openModal}>
+            <img src={plus} alt="add" />
+            Add your recipe
+          </button>
+        </div>
       </div>
 
       {isModalOpen && (
         <Modal active={isModalOpen} setActive={setIsModalOpen}>
           <div className={classes.modal_content}>
-            <form onSubmit={formik.handleSubmit}>
+            <form
+              className={classes.create_recipe}
+              onSubmit={formik.handleSubmit}
+            >
               <div className={classes.modal_header}>
                 <h2>Add Recipe</h2>
                 <img
@@ -290,27 +293,31 @@ const Search: React.FC = () => {
                       placeholder="Ingredient name"
                       value={ingredient.name}
                       onChange={formik.handleChange}
+                      className={classes.ingredient_input}
                     />
-                    <input
-                      name={`ingredients[${index}].quantity`}
-                      type="number"
-                      placeholder="Quantity"
-                      value={ingredient.quantity}
-                      onChange={formik.handleChange}
-                    />
-                    <select
-                      name={`ingredients[${index}].measure`}
-                      value={ingredient.measure}
-                      onChange={formik.handleChange}
-                    >
-                      <option value="TEASPOON">Teaspoon</option>
-                      <option value="TABLESPOON">Tablespoon</option>
-                      <option value="CUP">Cup</option>
-                      <option value="GRAM">Gram</option>
-                      <option value="KILOGRAM">Kilogram</option>
-                      <option value="OUNCE">Ounce</option>
-                      <option value="POUND">Pound</option>
-                    </select>
+                    <div className={classes.measure_container}>
+                      <input
+                        name={`ingredients[${index}].quantity`}
+                        type="number"
+                        placeholder="Quantity"
+                        value={ingredient.quantity}
+                        onChange={formik.handleChange}
+                      />
+                      <select
+                        name={`ingredients[${index}].measure`}
+                        value={ingredient.measure}
+                        onChange={formik.handleChange}
+                      >
+                        <option value="TEASPOON">Teaspoon</option>
+                        <option value="TABLESPOON">Tablespoon</option>
+                        <option value="CUP">Cup</option>
+                        <option value="GRAM">Gram</option>
+                        <option value="KILOGRAM">Kilogram</option>
+                        <option value="OUNCE">Ounce</option>
+                        <option value="POUND">Pound</option>
+                      </select>
+                    </div>
+
                     <button
                       type="button"
                       onClick={() =>
@@ -326,45 +333,47 @@ const Search: React.FC = () => {
                 ))}
               </div>
 
-              <div className={classes.input_group}>
-                <label htmlFor="difficulty">Difficulty</label>
-                <select
-                  id="difficulty"
-                  name="difficulty"
-                  onChange={formik.handleChange}
-                  value={formik.values.difficulty}
-                >
-                  <option value="EASY">Easy</option>
-                  <option value="MEDIUM">Medium</option>
-                  <option value="HARD">Hard</option>
-                </select>
-                {formik.errors.difficulty && (
-                  <div className={classes.error}>
-                    {formik.errors.difficulty}
-                  </div>
-                )}
-              </div>
+              <div className={classes.combined_inputs}>
+                <div className={classes.input_group}>
+                  <label htmlFor="difficulty">Difficulty</label>
+                  <select
+                    id="difficulty"
+                    name="difficulty"
+                    onChange={formik.handleChange}
+                    value={formik.values.difficulty}
+                  >
+                    <option value="EASY">Easy</option>
+                    <option value="MEDIUM">Medium</option>
+                    <option value="HARD">Hard</option>
+                  </select>
+                  {formik.errors.difficulty && (
+                    <div className={classes.error}>
+                      {formik.errors.difficulty}
+                    </div>
+                  )}
+                </div>
 
-              <div className={classes.input_group}>
-                <label htmlFor="category">Category</label>
-                <select
-                  id="category"
-                  name="categoryId"
-                  onChange={formik.handleChange}
-                  value={formik.values.categoryId}
-                >
-                  <option value="">Select category</option>
-                  {categories.map((category) => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
-                {formik.errors.categoryId && (
-                  <div className={classes.error}>
-                    {formik.errors.categoryId}
-                  </div>
-                )}
+                <div className={classes.input_group}>
+                  <label htmlFor="category">Category</label>
+                  <select
+                    id="category"
+                    name="categoryId"
+                    onChange={formik.handleChange}
+                    value={formik.values.categoryId}
+                  >
+                    <option value="">Select category</option>
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                  {formik.errors.categoryId && (
+                    <div className={classes.error}>
+                      {formik.errors.categoryId}
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className={classes.input_group}>
@@ -375,6 +384,7 @@ const Search: React.FC = () => {
                   type="number"
                   onChange={formik.handleChange}
                   value={formik.values.preparationTime}
+                  className={classes.input}
                 />
               </div>
               {formik.errors.preparationTime && (

@@ -11,6 +11,7 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  width: 100%;
 }
 
 .user_recipes {
@@ -18,7 +19,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  gap: 38rem;
+  /* gap: 38rem; */
 }
 
 .user_recipes p {
@@ -138,4 +139,21 @@
 
 .update_btn:hover {
   background-color: #fbbf75fe;
+}
+
+/* Media query for max-width 800px */
+@media (max-width: 800px) {
+  .recipe_box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .user_recipes {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+  }
 }
