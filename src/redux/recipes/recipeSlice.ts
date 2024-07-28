@@ -197,9 +197,9 @@ const recipeSlice = createSlice({
     });
     builder.addCase(likeRecipe.fulfilled, (state, action) => {
       state.loading = false;
-      const recipe = state.recipes.find(
-        (r) => r.id === action.payload.recipeId
-      );
+      const { recipeId } = action.payload;
+
+      const recipe = state.recipes.find((r) => r.id === recipeId);
       if (recipe) {
         recipe.likesAmount += recipe.isLikedByUser ? -1 : 1;
         recipe.isLikedByUser = !recipe.isLikedByUser;
@@ -207,6 +207,18 @@ const recipeSlice = createSlice({
           localStorage.setItem(`liked_${recipe.id}`, "true");
         } else {
           localStorage.removeItem(`liked_${recipe.id}`);
+        }
+      }
+
+      if (state.recipeDetail && state.recipeDetail.id === recipeId) {
+        state.recipeDetail.likesAmount += state.recipeDetail.isLikedByUser
+          ? -1
+          : 1;
+        state.recipeDetail.isLikedByUser = !state.recipeDetail.isLikedByUser;
+        if (state.recipeDetail.isLikedByUser) {
+          localStorage.setItem(`liked_${state.recipeDetail.id}`, "true");
+        } else {
+          localStorage.removeItem(`liked_${state.recipeDetail.id}`);
         }
       }
       state.error = null;
@@ -221,9 +233,9 @@ const recipeSlice = createSlice({
     });
     builder.addCase(saveRecipe.fulfilled, (state, action) => {
       state.loading = false;
-      const recipe = state.recipes.find(
-        (r) => r.id === action.payload.recipeId
-      );
+      const { recipeId } = action.payload;
+
+      const recipe = state.recipes.find((r) => r.id === recipeId);
       if (recipe) {
         recipe.savesAmount += recipe.isSavedByUser ? -1 : 1;
         recipe.isSavedByUser = !recipe.isSavedByUser;
@@ -231,6 +243,18 @@ const recipeSlice = createSlice({
           localStorage.setItem(`saved_${recipe.id}`, "true");
         } else {
           localStorage.removeItem(`saved_${recipe.id}`);
+        }
+      }
+
+      if (state.recipeDetail && state.recipeDetail.id === recipeId) {
+        state.recipeDetail.savesAmount += state.recipeDetail.isSavedByUser
+          ? -1
+          : 1;
+        state.recipeDetail.isSavedByUser = !state.recipeDetail.isSavedByUser;
+        if (state.recipeDetail.isSavedByUser) {
+          localStorage.setItem(`saved_${state.recipeDetail.id}`, "true");
+        } else {
+          localStorage.removeItem(`saved_${state.recipeDetail.id}`);
         }
       }
       state.error = null;
